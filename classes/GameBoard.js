@@ -7,11 +7,11 @@ class GameBoard {
       Submarine: 3,
       Destroyer: 2,
     };
-    this.board = this.createBoard(width);
+    this.board = this.create(width);
     this.latestHit = null;
   }
 
-  createBoard(width) {
+  create(width) {
     let board = [];
 
     for (let i = 0; i < width; ++i) {
@@ -23,6 +23,10 @@ class GameBoard {
     }
 
     return board;
+  }
+
+  reset() {
+    this.board = this.create(this.board.length);
   }
 
   mark(coordinates, shipType) {
@@ -113,7 +117,6 @@ class GameBoard {
     }
 
     this.mark(shipCoordinates, type);
-    console.log("Place ship on board:", type);
     return true;
   }
 
