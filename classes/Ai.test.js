@@ -32,4 +32,26 @@ describe("Test Ai-class", () => {
 
     expect(moves).toBeLessThan(101);
   });
+
+  test("Ai makes intelligent moves", () => {
+    let numberOfMoves = 0;
+    let numberOfRounds = 10000;
+
+    // Run 10000 games
+    for (let i = 0; i < numberOfRounds; i++) {
+      const ai = new Ai("Ai");
+      const player = new Player("Player");
+      player.gameBoard.placeShipsRandomly();
+      while (!player.gameBoard.allShipsSunk()) {
+        ai.makeAiMove(player.gameBoard);
+        numberOfMoves++;
+      }
+    }
+
+    const averageMoves = numberOfMoves / numberOfRounds;
+
+    console.log("Average moves:", averageMoves);
+
+    expect(averageMoves).toBeLessThan(90);
+  });
 });
