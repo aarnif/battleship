@@ -28,6 +28,84 @@ describe("Test GameBoard-class", () => {
     expect(placeShip).toBe(false);
   });
 
+  test("Place ships on the board randomly", () => {
+    const gameBoard = new GameBoard(10);
+    gameBoard.placeShipsRandomly();
+
+    let carrierLength = 0;
+    let battleshipLength = 0;
+    let cruiserLength = 0;
+    let submarineLength = 0;
+    let destroyerLength = 0;
+
+    for (let i = 0; i < 10; i++) {
+      for (let j = 0; j < 10; j++) {
+        if (gameBoard.board[i][j] == "Carrier") {
+          carrierLength++;
+        } else if (gameBoard.board[i][j] == "Battleship") {
+          battleshipLength++;
+        } else if (gameBoard.board[i][j] == "Cruiser") {
+          cruiserLength++;
+        } else if (gameBoard.board[i][j] == "Submarine") {
+          submarineLength++;
+        } else if (gameBoard.board[i][j] == "Destroyer") {
+          destroyerLength++;
+        }
+      }
+    }
+
+    expect(carrierLength).toBe(5);
+    expect(battleshipLength).toBe(4);
+    expect(cruiserLength).toBe(3);
+    expect(submarineLength).toBe(3);
+    expect(destroyerLength).toBe(2);
+  });
+
+  test("Place ships on the board with space between them", () => {
+    const gameBoard = new GameBoard(10);
+    gameBoard.placeShipsRandomly();
+
+    const shipTypes = [
+      "Carrier",
+      "Battleship",
+      "Cruiser",
+      "Submarine",
+      "Destroyer",
+    ];
+
+    let shipsArePlacedCorrectly = true;
+
+    for (let i = 0; i < 10; i++) {
+      for (let j = 0; j < 10; j++) {
+        if (shipTypes.includes(gameBoard.board[i][j])) {
+          const otherShips = shipTypes.filter(
+            (ship) => ship !== gameBoard.board[i][j]
+          );
+
+          if (i > 0 && otherShips.includes(gameBoard.board[i - 1][j])) {
+            shipsArePlacedCorrectly = false;
+          }
+
+          if (i < 9 && otherShips.includes(gameBoard.board[i + 1][j])) {
+            shipsArePlacedCorrectly = false;
+          }
+
+          if (j > 0 && otherShips.includes(gameBoard.board[i][j - 1])) {
+            shipsArePlacedCorrectly = false;
+          }
+
+          if (j < 9 && otherShips.includes(gameBoard.board[i][j + 1])) {
+            shipsArePlacedCorrectly = false;
+          }
+        }
+      }
+    }
+
+    console.table(gameBoard.board);
+
+    expect(shipsArePlacedCorrectly).toBe(true);
+  });
+
   test("Receive attack on empty cell", () => {
     const gameBoard = new GameBoard(10);
     gameBoard.receiveAttack([0, 0]);
@@ -62,14 +140,14 @@ describe("Test GameBoard-class", () => {
   test("All ships are not sunk", () => {
     const gameBoard = new GameBoard(10);
     gameBoard.placeShip("Destroyer", [0, 0], "vertical");
-    gameBoard.placeShip("Carrier", [1, 1], "vertical");
+    gameBoard.placeShip("Carrier", [3, 3], "vertical");
 
     for (let i = 0; i < 2; i++) {
       gameBoard.receiveAttack([0, i]);
     }
 
-    for (let i = 1; i < 3; i++) {
-      gameBoard.receiveAttack([1, i]);
+    for (let i = 3; i < 5; i++) {
+      gameBoard.receiveAttack([3, i]);
     }
 
     expect(gameBoard.allShipsSunk()).toBe(false);
@@ -78,14 +156,14 @@ describe("Test GameBoard-class", () => {
   test("All ships are sunk", () => {
     const gameBoard = new GameBoard(10);
     gameBoard.placeShip("Destroyer", [0, 0], "vertical");
-    gameBoard.placeShip("Carrier", [1, 1], "vertical");
+    gameBoard.placeShip("Carrier", [3, 3], "vertical");
 
     for (let i = 0; i < 2; i++) {
       gameBoard.receiveAttack([0, i]);
     }
 
-    for (let i = 1; i < 6; i++) {
-      gameBoard.receiveAttack([1, i]);
+    for (let i = 3; i < 9; i++) {
+      gameBoard.receiveAttack([3, i]);
     }
 
     expect(gameBoard.allShipsSunk()).toBe(true);

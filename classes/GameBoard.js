@@ -67,6 +67,34 @@ class GameBoard {
     return true;
   }
 
+  // Created with ChatGPT-4o
+  checkIfShipIsWithinOneCellFromAnotherShip(coordinates) {
+    const directions = [
+      [-1, 0],
+      [1, 0],
+      [0, -1],
+      [0, 1],
+      [-1, -1],
+      [-1, 1],
+      [1, -1],
+      [1, 1],
+    ];
+
+    return coordinates.some(([x, y]) =>
+      directions.some(([dx, dy]) => {
+        const nx = x + dx;
+        const ny = y + dy;
+        return (
+          nx >= 0 &&
+          nx < this.board.length &&
+          ny >= 0 &&
+          ny < this.board.length &&
+          this.board[nx][ny]
+        );
+      })
+    );
+  }
+
   placeShip(type, startingCoordinates, position = "horizontal") {
     const shipLength = this.shipTypes[type];
 
@@ -78,7 +106,8 @@ class GameBoard {
 
     if (
       !this.checkIfShipCoordinatesAreInBounds(shipCoordinates) ||
-      !this.checkIfGameBoardCellIsTaken(shipCoordinates)
+      !this.checkIfGameBoardCellIsTaken(shipCoordinates) ||
+      this.checkIfShipIsWithinOneCellFromAnotherShip(shipCoordinates)
     ) {
       return false;
     }
@@ -86,6 +115,24 @@ class GameBoard {
     this.mark(shipCoordinates, type);
     console.log("Place ship on board:", type);
     return true;
+  }
+
+  placeShipsRandomly() {
+    const shipTypes = Object.keys(this.shipTypes);
+
+    for (let i = 0; i < shipTypes.length; ++i) {
+      let placed = false;
+
+      while (!placed) {
+        const x = Math.floor(Math.random() * this.board.length);
+        const y = Math.floor(Math.random() * this.board.length);
+        const position = Math.random() < 0.5 ? "horizontal" : "vertical";
+
+        if (this.placeShip(shipTypes[i], [x, y], position)) {
+          placed = true;
+        }
+      }
+    }
   }
 
   receiveAttack(coordinates) {
