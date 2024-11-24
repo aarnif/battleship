@@ -91,6 +91,10 @@ out
 .nuxt
 dist
 
+# Vite
+dist-ssr
+*.local
+
 # Gatsby files
 .cache/
 # Comment in the public line in if your project uses Gatsby and not Next.js
@@ -129,5 +133,13 @@ dist
 .yarn/install-state.gz
 .pnp.*
 
-# Mac-related
+# Editor directories and files
+.vscode/*
+!.vscode/extensions.json
+.idea
 .DS_Store
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
