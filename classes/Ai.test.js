@@ -11,7 +11,7 @@ describe("Test Ai-class", () => {
     const ai = new Ai("Ai");
     const player = new Player("Player");
 
-    ai.makeAiMove(player.gameBoard);
+    ai.makeMove(player.gameBoard);
     expect(player.getBoard()[ai.latestMove[0]][ai.latestMove[1]]).toEqual(
       "miss"
     );
@@ -26,7 +26,7 @@ describe("Test Ai-class", () => {
     let moves = 0;
 
     while (!player.gameBoard.allShipsSunk()) {
-      ai.makeAiMove(player.gameBoard);
+      ai.makeMove(player.gameBoard);
       moves++;
     }
 
@@ -43,7 +43,7 @@ describe("Test Ai-class", () => {
       const player = new Player("Player");
       player.gameBoard.placeShipsRandomly();
       while (!player.gameBoard.allShipsSunk()) {
-        ai.makeAiMove(player.gameBoard);
+        ai.makeMove(player.gameBoard);
         numberOfMoves++;
       }
     }

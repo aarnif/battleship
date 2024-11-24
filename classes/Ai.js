@@ -7,30 +7,13 @@ class Ai extends Player {
     this.targetCoordinates = [];
   }
 
-  checkIfMoveIsLegal(gameBoard, x, y) {
-    return (
-      x >= 0 &&
-      x < gameBoard.board.length &&
-      y >= 0 &&
-      y < gameBoard.board.length &&
-      gameBoard.board[x][y] !== "miss" &&
-      gameBoard.board[x][y] !== "hit"
-    );
-  }
-
-  getRandomCoordinates() {
-    const x = Math.floor(Math.random() * 10);
-    const y = Math.floor(Math.random() * 10);
-    return [x, y];
-  }
-
-  makeAiMove(gameBoard) {
+  makeMove(gameBoard) {
     while (true) {
       let x, y;
       if (this.targetCoordinates.length) {
         [x, y] = this.targetCoordinates.pop();
       } else {
-        [x, y] = this.getRandomCoordinates();
+        [x, y] = this.getRandomCoordinates(gameBoard);
       }
 
       if (
