@@ -81,10 +81,15 @@ const App = () => {
 
   return (
     <div className="flex-grow max-w-[1200px] flex justify-between items-center">
-      <GameBoard playerName={playerName} gameBoard={playerGameBoard} />
+      <GameBoard
+        playerName={playerName}
+        gameBoard={playerGameBoard}
+        ships={player.gameBoard.ships}
+      />
       <GameBoard
         playerName={aiName}
         gameBoard={aiGameBoard}
+        ships={ai.gameBoard.ships}
         handleClickCell={handleClickCell}
       />
       <dialog ref={newGameRef}>
