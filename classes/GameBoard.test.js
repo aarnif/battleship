@@ -11,6 +11,8 @@ describe("Test GameBoard-class", () => {
     const gameBoard = new GameBoard(10);
     const placeShip = gameBoard.placeShip("Destroyer", [0, 0], "vertical");
     expect(placeShip).toBe(true);
+    expect(gameBoard.ships.length).toBe(1);
+    expect(gameBoard.ships[0].name).toBe("Destroyer");
     expect(gameBoard.board[0][0]).toBe("Destroyer");
     expect(gameBoard.board[0][1]).toBe("Destroyer");
   });
@@ -100,9 +102,6 @@ describe("Test GameBoard-class", () => {
         }
       }
     }
-
-    console.table(gameBoard.board);
-
     expect(shipsArePlacedCorrectly).toBe(true);
   });
 

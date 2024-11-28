@@ -8,6 +8,7 @@ class GameBoard {
       Destroyer: 2,
     };
     this.board = this.create(width);
+    this.ships = [];
     this.latestHit = null;
   }
 
@@ -27,6 +28,8 @@ class GameBoard {
 
   reset() {
     this.board = this.create(this.board.length);
+    this.ships = [];
+    this.latestHit = null;
   }
 
   mark(coordinates, shipType) {
@@ -117,6 +120,7 @@ class GameBoard {
     }
 
     this.mark(shipCoordinates, type);
+    this.ships.push({ name: type, coordinates: shipCoordinates, position });
     return true;
   }
 
