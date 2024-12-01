@@ -44,9 +44,9 @@ class GameBoard {
     const coordinates = [];
 
     for (let i = 0; i < shipLength; ++i) {
-      if (shipPosition === "horizontal") {
+      if (shipPosition === "vertical") {
         coordinates.push([x + i, y]);
-      } else if (shipPosition === "vertical") {
+      } else if (shipPosition === "horizontal") {
         coordinates.push([x, y + i]);
       }
     }
@@ -128,15 +128,13 @@ class GameBoard {
     const shipTypes = Object.keys(this.shipTypes);
 
     for (let i = 0; i < shipTypes.length; ++i) {
-      let placed = false;
-
-      while (!placed) {
+      while (true) {
         const x = Math.floor(Math.random() * this.board.length);
         const y = Math.floor(Math.random() * this.board.length);
         const position = Math.random() < 0.5 ? "horizontal" : "vertical";
 
         if (this.placeShip(shipTypes[i], [x, y], position)) {
-          placed = true;
+          break;
         }
       }
     }
