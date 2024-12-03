@@ -1,7 +1,8 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useRef } from "react";
 
 import Player from "../classes/Player.js";
 import Ai from "../classes/Ai.js";
+import PlaceShips from "./components/PlaceShips.jsx";
 import GameBoard from "./components/GameBoard.jsx";
 
 const player = new Player("Player");
@@ -15,21 +16,17 @@ const App = () => {
   const [playerGameBoard, setPlayerGameBoard] = useState(player.getBoard());
   const [aiGameBoard, setAiGameBoard] = useState(ai.getBoard());
   const [clickedCells, setClickedCells] = useState([]);
+  const [isGameOn, setIsGameOn] = useState(false);
   const [gameOverMessage, setGameOverMessage] = useState("");
 
-  useEffect(() => {
-    handleNewGame();
-  }, []);
-
-  const handleNewGame = () => {
-    player.gameBoard.reset();
-    ai.gameBoard.reset();
-    player.gameBoard.placeShipsRandomly();
+  const handleClickNewGame = () => {
+    console.log("Starting new game...");
     ai.gameBoard.placeShipsRandomly();
     setPlayerGameBoard(player.getBoard());
     setAiGameBoard(ai.getBoard());
     setRounds(1);
     setClickedCells([]);
+    setIsGameOn(true);
   };
 
   const checkIfGameOver = (player, ai) => {
@@ -74,24 +71,88 @@ const App = () => {
     setClickedCells((prevState) => [...prevState, [x, y]]);
   };
 
-  const handleClickNewGame = () => {
-    handleNewGame();
+  const handleClickRestartGame = () => {
+    player.gameBoard.reset();
+    ai.gameBoard.reset();
+    setPlayerGameBoard(player.getBoard());
+    setIsGameOn(false);
     newGameRef.current.close();
   };
 
+  const handlePlaceShip = (e) => {
+    e.preventDefault();
+    const shipName = e.dataTransfer.getData("ship-name");
+    const shipPosition = e.dataTransfer.getData("ship-position");
+    const [x, y] = e.target.id.split("-").map(Number);
+
+    if (player.gameBoard.placeShipManually(shipName, [x, y], shipPosition)) {
+      setPlayerGameBoard(player.getBoard());
+      console.log("Ship placed successfully.");
+    } else {
+      console.log("Invalid move. Try again.");
+    }
+  };
+
+  const handleChangeShipPosition = (e) => {
+    const shipName = e.target.getAttribute("data-shipname");
+    const ship = player.gameBoard.ships.find((ship) => ship.name === shipName);
+    const newShipPosition =
+      ship.position === "horizontal" ? "vertical" : "horizontal";
+
+    if (
+      player.gameBoard.placeShipManually(
+        shipName,
+        ship.coordinates[0],
+        newShipPosition
+      )
+    ) {
+      setPlayerGameBoard(player.getBoard());
+      console.log("Ship placed successfully.");
+    } else {
+      console.log("Invalid move. Try again.");
+    }
+  };
+
   return (
-    <div className="flex-grow max-w-[1200px] flex justify-between items-center">
-      <GameBoard
-        playerName={playerName}
-        gameBoard={playerGameBoard}
-        ships={player.gameBoard.ships}
-      />
-      <GameBoard
-        playerName={aiName}
-        gameBoard={aiGameBoard}
-        ships={ai.gameBoard.ships}
-        handleClickCell={handleClickCell}
-      />
+    <div className="w-full max-w-[1200px] flex-grow flex flex-col items-center">
+      {isGameOn ? (
+        <div className="w-full flex-grow flex justify-between items-center">
+          <GameBoard
+            key={"Player"}
+            playerName={playerName}
+            gameBoard={playerGameBoard}
+            ships={player.gameBoard.ships}
+          />
+          <GameBoard
+            key={"Computer"}
+            playerName={aiName}
+            gameBoard={aiGameBoard}
+            ships={ai.gameBoard.ships}
+            handleClickCell={handleClickCell}
+          />
+        </div>
+      ) : (
+        <>
+          <div className="w-full flex-grow flex justify-between items-center">
+            <PlaceShips
+              playerName={playerName}
+              gameBoard={playerGameBoard}
+              shipTypes={player.gameBoard.shipTypes}
+              ships={player.gameBoard.ships}
+              handlePlaceShip={handlePlaceShip}
+              handleChangeShipPosition={handleChangeShipPosition}
+            />
+          </div>
+        </>
+      )}
+      <div className="w-full flex-grow flex justify-center items-center">
+        <button
+          className="text-2xl font-bold"
+          onClick={isGameOn ? handleClickRestartGame : handleClickNewGame}
+        >
+          {isGameOn ? "Restart Game" : "Start Game"}
+        </button>
+      </div>
       <dialog ref={newGameRef}>
         <div className="w-[500px] h-[280px] bg-white flex flex-col justify-center items-center">
           <h1 className="text-3xl font-bold mb-2">Game Over!</h1>
@@ -99,7 +160,10 @@ const App = () => {
           <h3 className="text-2xl mb-2">Game lasted {rounds} rounds.</h3>
 
           <div className="flex justify-around w-full">
-            <button className="text-2xl font-bold" onClick={handleClickNewGame}>
+            <button
+              className="text-2xl font-bold"
+              onClick={handleClickRestartGame}
+            >
               New Game
             </button>
           </div>

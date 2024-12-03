@@ -1,12 +1,12 @@
 class GameBoard {
   constructor(width = 10) {
-    this.shipTypes = {
-      Carrier: 5,
-      Battleship: 4,
-      Cruiser: 3,
-      Submarine: 3,
-      Destroyer: 2,
-    };
+    this.shipTypes = [
+      { name: "Carrier", length: 5, position: "horizontal" },
+      { name: "Battleship", length: 4, position: "horizontal" },
+      { name: "Cruiser", length: 3, position: "horizontal" },
+      { name: "Submarine", length: 3, position: "horizontal" },
+      { name: "Destroyer", length: 2, position: "horizontal" },
+    ];
     this.board = this.create(width);
     this.ships = [];
     this.latestHit = null;
@@ -46,12 +46,24 @@ class GameBoard {
     for (let i = 0; i < shipLength; ++i) {
       if (shipPosition === "vertical") {
         coordinates.push([x + i, y]);
-      } else if (shipPosition === "horizontal") {
+      } else {
         coordinates.push([x, y + i]);
       }
     }
 
     return coordinates;
+  }
+
+  createShipCoordinates(type, startingCoordinates, position) {
+    const shipLength = this.shipTypes.find((ship) => ship.name === type).length;
+
+    const shipCoordinates = this.calculateCoordinates(
+      startingCoordinates,
+      position,
+      shipLength
+    );
+
+    return shipCoordinates;
   }
 
   checkIfShipCoordinatesAreInBounds(coordinates) {
@@ -64,10 +76,10 @@ class GameBoard {
     return true;
   }
 
-  checkIfGameBoardCellIsTaken(coordinates) {
+  checkIfGameBoardCellIsTaken(coordinates, type = null) {
     for (let i = 0; i < coordinates.length; ++i) {
       const [x, y] = coordinates[i];
-      if (this.board[x][y]) {
+      if (this.board[x][y] && this.board[x][y] !== type) {
         return false;
       }
     }
@@ -102,13 +114,11 @@ class GameBoard {
     );
   }
 
-  placeShip(type, startingCoordinates, position = "horizontal") {
-    const shipLength = this.shipTypes[type];
-
-    const shipCoordinates = this.calculateCoordinates(
+  placeShipRandomly(type, startingCoordinates, position = "horizontal") {
+    const shipCoordinates = this.createShipCoordinates(
+      type,
       startingCoordinates,
-      position,
-      shipLength
+      position
     );
 
     if (
@@ -120,24 +130,67 @@ class GameBoard {
     }
 
     this.mark(shipCoordinates, type);
-    this.ships.push({ name: type, coordinates: shipCoordinates, position });
+    this.ships.push({
+      name: type,
+      coordinates: shipCoordinates,
+      position: position,
+      length: this.shipTypes.find((ship) => ship.name === type).length,
+    });
     return true;
   }
 
   placeShipsRandomly() {
-    const shipTypes = Object.keys(this.shipTypes);
-
+    const shipTypes = this.shipTypes.map((ship) => ship.name);
     for (let i = 0; i < shipTypes.length; ++i) {
       while (true) {
         const x = Math.floor(Math.random() * this.board.length);
         const y = Math.floor(Math.random() * this.board.length);
         const position = Math.random() < 0.5 ? "horizontal" : "vertical";
 
-        if (this.placeShip(shipTypes[i], [x, y], position)) {
+        if (this.placeShipRandomly(shipTypes[i], [x, y], position)) {
           break;
         }
       }
     }
+  }
+
+  placeShipManually(type, startingCoordinates, position = "horizontal") {
+    const shipCoordinates = this.createShipCoordinates(
+      type,
+      startingCoordinates,
+      position
+    );
+
+    if (
+      !this.checkIfShipCoordinatesAreInBounds(shipCoordinates) ||
+      !this.checkIfGameBoardCellIsTaken(shipCoordinates, type)
+    ) {
+      return false;
+    }
+
+    if (this.ships.find((ship) => ship.name === type)) {
+      this.ships.map((ship) =>
+        ship.name === type
+          ? { ...ship, coordinates: shipCoordinates, position: position }
+          : ship
+      );
+    } else {
+      this.ships.push({
+        name: type,
+        coordinates: shipCoordinates,
+        position: position,
+        length: this.shipTypes.find((ship) => ship.name === type).length,
+      });
+    }
+    this.updateShipPositions();
+    return true;
+  }
+
+  updateShipPositions() {
+    this.board = this.create(this.board.length);
+    this.ships.forEach((ship) => {
+      this.mark(ship.coordinates, ship.name);
+    });
   }
 
   receiveAttack(coordinates) {
@@ -145,7 +198,7 @@ class GameBoard {
     if (this.board[x][y] == "hit" || this.board[x][y] == "miss") {
       return false;
     }
-    if (this.shipTypes[this.board[x][y]]) {
+    if (this.shipTypes.find((ship) => ship.name === this.board[x][y])) {
       this.board[x][y] = "hit";
     } else {
       this.board[x][y] = "miss";
@@ -157,7 +210,7 @@ class GameBoard {
   allShipsSunk() {
     for (let i = 0; i < this.board.length; ++i) {
       for (let j = 0; j < this.board.length; ++j) {
-        if (this.shipTypes[this.board[i][j]]) {
+        if (this.shipTypes.find((ship) => ship.name === this.board[i][j])) {
           return false;
         }
       }
