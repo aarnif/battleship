@@ -75,13 +75,7 @@ const ShipPlacementBoard = ({
   );
 };
 
-const ShipsContainer = ({
-  playerName,
-  shipTypes,
-  shipNames,
-  handleDragStart,
-  handleClickCell,
-}) => {
+const ShipsContainer = ({ shipTypes, shipNames, handleDragStart }) => {
   const unPlacedShips = shipTypes.filter(
     (ship) => !shipNames.includes(ship.name)
   );
@@ -93,18 +87,14 @@ const ShipsContainer = ({
         {unPlacedShips.map((ship) => (
           <div
             key={ship.name}
-            className="flex-grow flex"
-            draggable={playerName === "Player" ? true : false}
+            className="flex-grow flex hover:cursor-pointer group"
+            draggable={true}
             onDragStart={(e) => handleDragStart(e, ship)}
           >
             {[...Array(ship.length).keys()].map((index) => (
               <div
                 key={`${ship.name}-${index}`}
-                style={{
-                  backgroundColor: "grey",
-                  cursor: handleClickCell ? "pointer" : "default",
-                }}
-                className="w-12 h-12 border border-black"
+                className="w-12 h-12 border border-black bg-gray-500 group-hover:bg-gray-600"
               ></div>
             ))}
           </div>
@@ -143,11 +133,9 @@ const PlaceShips = ({
         handleChangeShipPosition={handleChangeShipPosition}
       />
       <ShipsContainer
-        playerName={playerName}
         shipTypes={shipTypes}
         shipNames={shipNames}
         handleDragStart={handleDragStart}
-        handleClickCell={handleClickCell}
       />
     </div>
   );
