@@ -43,7 +43,7 @@ const Cell = ({
       onDrag={handlePlaceShip ? (e) => e.preventDefault() : null}
       onDragOver={handleDragOver}
       onDragLeave={handleDragLeave}
-      onDrop={handlePlaceShip ? (e) => handlePlaceShip(e) : null}
+      onDrop={handlePlaceShip ? (e) => handlePlaceShip(e, setBgColor) : null}
       data-shipname={content}
       key={`${x}-${y}`}
       id={`${x}-${y}`}

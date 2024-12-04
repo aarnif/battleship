@@ -79,7 +79,7 @@ const App = () => {
     newGameRef.current.close();
   };
 
-  const handlePlaceShip = (e) => {
+  const handlePlaceShip = (e, setBgColor) => {
     e.preventDefault();
     const shipName = e.dataTransfer.getData("ship-name");
     const shipPosition = e.dataTransfer.getData("ship-position");
@@ -90,6 +90,7 @@ const App = () => {
       console.log("Ship placed successfully.");
     } else {
       console.log("Invalid move. Try again.");
+      setBgColor("white");
     }
   };
 
