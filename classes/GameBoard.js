@@ -169,7 +169,7 @@ class GameBoard {
     }
 
     if (this.ships.find((ship) => ship.name === type)) {
-      this.ships.map((ship) =>
+      this.ships = this.ships.map((ship) =>
         ship.name === type
           ? { ...ship, coordinates: shipCoordinates, position: position }
           : ship
