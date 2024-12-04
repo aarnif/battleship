@@ -11,7 +11,7 @@ const Cell = ({
 }) => {
   const [bgColor, setBgColor] = useState("white");
 
-  useEffect(() => {
+  const changeBgColor = () => {
     if (shipNames.includes(content) && playerName === "Player") {
       setBgColor("gray");
     } else if (content === "miss") {
@@ -21,6 +21,10 @@ const Cell = ({
     } else {
       setBgColor("white");
     }
+  };
+
+  useEffect(() => {
+    changeBgColor();
   }, [content]);
 
   const handleDragOver = (e) => {
@@ -37,6 +41,18 @@ const Cell = ({
     }
   };
 
+  const handleOnMouseOver = (e) => {
+    e.preventDefault();
+    if (playerName === "Computer") {
+      setBgColor("lightgray");
+    }
+  };
+
+  const handleMouseLeave = (e) => {
+    e.preventDefault();
+    changeBgColor();
+  };
+
   return (
     <button
       onClick={handleClickCell ? () => handleClickCell(x, y) : null}
@@ -44,6 +60,8 @@ const Cell = ({
       onDragOver={handleDragOver}
       onDragLeave={handleDragLeave}
       onDrop={handlePlaceShip ? (e) => handlePlaceShip(e, setBgColor) : null}
+      onMouseOver={handleOnMouseOver}
+      onMouseLeave={handleMouseLeave}
       data-shipname={content}
       key={`${x}-${y}`}
       id={`${x}-${y}`}
