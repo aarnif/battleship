@@ -120,6 +120,12 @@ const App = () => {
     }
   };
 
+  const handlePlaceShipsRandomly = () => {
+    player.gameBoard.placeShipsRandomly();
+    setPlayerGameBoard(player.getBoard());
+    setAreAllShipsPlaced(true);
+  };
+
   return (
     <div className="w-full max-w-[1200px] flex-grow flex flex-col items-center">
       {isGameOn ? (
@@ -153,13 +159,22 @@ const App = () => {
           </div>
         </>
       )}
-      {areAllShipsPlaced && (
+      {areAllShipsPlaced ? (
         <div className="w-full flex-grow flex justify-center items-center">
           <button
             className="text-2xl font-bold"
             onClick={isGameOn ? handleClickRestartGame : handleClickNewGame}
           >
             {isGameOn ? "Restart Game" : "Start Game"}
+          </button>
+        </div>
+      ) : (
+        <div className="w-full flex-grow flex justify-center items-center">
+          <button
+            className="text-2xl font-bold"
+            onClick={handlePlaceShipsRandomly}
+          >
+            Place Ships Randomly
           </button>
         </div>
       )}
