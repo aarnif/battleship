@@ -13,11 +13,11 @@ const Cell = ({
 
   const changeBgColor = () => {
     if (shipNames.includes(content) && playerName === "Player") {
-      setBgColor("gray");
+      setBgColor("#6b7280");
     } else if (content === "miss") {
-      setBgColor("red");
+      setBgColor("#ef4444");
     } else if (content === "hit") {
-      setBgColor("green");
+      setBgColor("#22c55e");
     } else {
       setBgColor("white");
     }
@@ -29,13 +29,13 @@ const Cell = ({
 
   const handleDragOver = (e) => {
     e.preventDefault();
-    setBgColor("gray");
+    setBgColor("#6b7280");
   };
 
   const handleDragLeave = (e) => {
     e.preventDefault();
     if (shipNames.includes(content)) {
-      setBgColor("gray");
+      setBgColor("#6b7280");
     } else {
       setBgColor("white");
     }
@@ -44,7 +44,7 @@ const Cell = ({
   const handleOnMouseOver = (e) => {
     e.preventDefault();
     if (playerName === "Computer") {
-      setBgColor("lightgray");
+      setBgColor("#d1d5db");
     }
   };
 

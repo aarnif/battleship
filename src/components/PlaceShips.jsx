@@ -5,7 +5,7 @@ const FreeCell = ({ shipNames, content, y, x, handlePlaceShip }) => {
 
   const changeBgColor = () => {
     if (shipNames.includes(content)) {
-      setBgColor("gray");
+      setBgColor("#6b7280");
     } else {
       setBgColor("white");
     }
@@ -17,13 +17,13 @@ const FreeCell = ({ shipNames, content, y, x, handlePlaceShip }) => {
 
   const handleDragOver = (e) => {
     e.preventDefault();
-    setBgColor("gray");
+    setBgColor("#6b7280");
   };
 
   const handleDragLeave = (e) => {
     e.preventDefault();
     if (shipNames.includes(content)) {
-      setBgColor("gray");
+      setBgColor("#6b7280");
     } else {
       setBgColor("white");
     }
