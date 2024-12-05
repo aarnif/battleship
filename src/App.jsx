@@ -16,6 +16,7 @@ const App = () => {
   const [playerGameBoard, setPlayerGameBoard] = useState(player.getBoard());
   const [aiGameBoard, setAiGameBoard] = useState(ai.getBoard());
   const [clickedCells, setClickedCells] = useState([]);
+  const [areAllShipsPlaced, setAreAllShipsPlaced] = useState(false);
   const [isGameOn, setIsGameOn] = useState(false);
   const [gameOverMessage, setGameOverMessage] = useState("");
 
@@ -76,6 +77,7 @@ const App = () => {
     ai.gameBoard.reset();
     setPlayerGameBoard(player.getBoard());
     setIsGameOn(false);
+    setAreAllShipsPlaced(false);
     newGameRef.current.close();
   };
 
@@ -88,6 +90,10 @@ const App = () => {
     if (player.gameBoard.placeShipManually(shipName, [x, y], shipPosition)) {
       setPlayerGameBoard(player.getBoard());
       console.log("Ship placed successfully.");
+      if (player.gameBoard.ships.length === player.gameBoard.shipTypes.length) {
+        console.log("All ships are placed on the board.");
+        setAreAllShipsPlaced(true);
+      }
     } else {
       console.log("Invalid move. Try again.");
       setBgColor("white");
@@ -142,18 +148,21 @@ const App = () => {
               ships={player.gameBoard.ships}
               handlePlaceShip={handlePlaceShip}
               handleChangeShipPosition={handleChangeShipPosition}
+              areAllShipsPlaced={areAllShipsPlaced}
             />
           </div>
         </>
       )}
-      <div className="w-full flex-grow flex justify-center items-center">
-        <button
-          className="text-2xl font-bold"
-          onClick={isGameOn ? handleClickRestartGame : handleClickNewGame}
-        >
-          {isGameOn ? "Restart Game" : "Start Game"}
-        </button>
-      </div>
+      {areAllShipsPlaced && (
+        <div className="w-full flex-grow flex justify-center items-center">
+          <button
+            className="text-2xl font-bold"
+            onClick={isGameOn ? handleClickRestartGame : handleClickNewGame}
+          >
+            {isGameOn ? "Restart Game" : "Start Game"}
+          </button>
+        </div>
+      )}
       <dialog ref={newGameRef}>
         <div className="w-[500px] h-[280px] bg-white flex flex-col justify-center items-center">
           <h1 className="text-3xl font-bold mb-2">Game Over!</h1>

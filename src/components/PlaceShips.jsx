@@ -170,6 +170,7 @@ const PlaceShips = ({
   ships,
   handlePlaceShip,
   handleChangeShipPosition,
+  areAllShipsPlaced,
 }) => {
   const shipNames = ships.map((ship) => ship.name);
 
@@ -179,7 +180,7 @@ const PlaceShips = ({
   };
 
   return (
-    <div className="flex-grow flex justify-between items-center">
+    <div className="flex-grow flex justify-center items-center">
       <ShipPlacementBoard
         playerName={playerName}
         gameBoard={gameBoard}
@@ -189,11 +190,13 @@ const PlaceShips = ({
         handlePlaceShip={handlePlaceShip}
         handleChangeShipPosition={handleChangeShipPosition}
       />
-      <ShipsContainer
-        shipTypes={shipTypes}
-        shipNames={shipNames}
-        handleDragStart={handleDragStart}
-      />
+      {!areAllShipsPlaced && (
+        <ShipsContainer
+          shipTypes={shipTypes}
+          shipNames={shipNames}
+          handleDragStart={handleDragStart}
+        />
+      )}
     </div>
   );
 };
