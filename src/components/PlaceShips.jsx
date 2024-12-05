@@ -52,6 +52,34 @@ const FreeCell = ({ shipNames, content, y, x, handlePlaceShip }) => {
   );
 };
 
+const PlacedShip = ({ ship, handleDragStart, handleChangeShipPosition }) => {
+  return (
+    <div
+      key={ship.name}
+      style={{
+        gridArea: ship.name,
+        display: "flex",
+        flexDirection: ship.position === "horizontal" ? "row" : "column",
+      }}
+      className="group"
+      draggable={true}
+      onDragStart={(e) => handleDragStart(e, ship)}
+      onClick={handleChangeShipPosition}
+    >
+      {ship.coordinates.map((coordinate) => (
+        <div
+          data-shipname={ship.name}
+          key={`${coordinate[0]}-${coordinate[1]}`}
+          style={{
+            cursor: "pointer",
+          }}
+          className="w-12 h-12 border border-black bg-gray-500 group-hover:bg-gray-600"
+        ></div>
+      ))}
+    </div>
+  );
+};
+
 const ShipPlacementBoard = ({
   playerName,
   gameBoard,
