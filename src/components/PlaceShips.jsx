@@ -1,4 +1,56 @@
-import Cell from "./Cell";
+import { useState, useEffect } from "react";
+
+const FreeCell = ({ shipNames, content, y, x, handlePlaceShip }) => {
+  const [bgColor, setBgColor] = useState("white");
+
+  const changeBgColor = () => {
+    if (shipNames.includes(content)) {
+      setBgColor("gray");
+    } else {
+      setBgColor("white");
+    }
+  };
+
+  useEffect(() => {
+    changeBgColor();
+  }, [content]);
+
+  const handleDragOver = (e) => {
+    e.preventDefault();
+    setBgColor("gray");
+  };
+
+  const handleDragLeave = (e) => {
+    e.preventDefault();
+    if (shipNames.includes(content)) {
+      setBgColor("gray");
+    } else {
+      setBgColor("white");
+    }
+  };
+
+  const handleMouseLeave = (e) => {
+    e.preventDefault();
+    changeBgColor();
+  };
+
+  return (
+    <div
+      onDrag={handlePlaceShip ? (e) => e.preventDefault() : null}
+      onDragOver={handleDragOver}
+      onDragLeave={handleDragLeave}
+      onDrop={handlePlaceShip ? (e) => handlePlaceShip(e, setBgColor) : null}
+      onMouseLeave={handleMouseLeave}
+      key={`${x}-${y}`}
+      id={`${x}-${y}`}
+      style={{
+        backgroundColor: bgColor,
+        cursor: "default",
+      }}
+      className="w-12 h-12 border border-black group"
+    ></div>
+  );
+};
 
 const ShipPlacementBoard = ({
   playerName,
@@ -7,7 +59,6 @@ const ShipPlacementBoard = ({
   shipNames,
   handleDragStart,
   handlePlaceShip,
-  handleClickCell,
   handleChangeShipPosition,
 }) => {
   const generateGridTemplate = (array) =>
@@ -33,40 +84,20 @@ const ShipPlacementBoard = ({
         }}
       >
         {ships.map((ship) => (
-          <div
+          <PlacedShip
             key={ship.name}
-            style={{
-              gridArea: ship.name,
-              display: "flex",
-              flexDirection: ship.position === "horizontal" ? "row" : "column",
-            }}
-            draggable={playerName === "Player" ? true : false}
-            onDragStart={(e) => handleDragStart(e, ship)}
-            onClick={handleChangeShipPosition}
-          >
-            {ship.coordinates.map((coordinate) => (
-              <Cell
-                key={`${coordinate[0]}-${coordinate[1]}`}
-                playerName={playerName}
-                shipNames={shipNames}
-                content={ship.name}
-                x={coordinate[0]}
-                y={coordinate[1]}
-                handleClickCell={handleClickCell}
-                handlePlaceShip={handlePlaceShip}
-              />
-            ))}
-          </div>
+            ship={ship}
+            handleDragStart={handleDragStart}
+            handleChangeShipPosition={handleChangeShipPosition}
+          />
         ))}
         {nonShipCells.map((cell) => (
-          <Cell
+          <FreeCell
             key={`${cell[0]}-${cell[1]}`}
-            playerName={playerName}
             shipNames={shipNames}
+            content={gameBoard[cell[0]][cell[1]]}
             x={cell[0]}
             y={cell[1]}
-            content={gameBoard[cell[0]][cell[1]]}
-            handleClickCell={handleClickCell}
             handlePlaceShip={handlePlaceShip}
           />
         ))}
@@ -111,7 +142,6 @@ const PlaceShips = ({
   ships,
   handlePlaceShip,
   handleChangeShipPosition,
-  handleClickCell = null,
 }) => {
   const shipNames = ships.map((ship) => ship.name);
 
@@ -129,7 +159,6 @@ const PlaceShips = ({
         shipNames={shipNames}
         handleDragStart={handleDragStart}
         handlePlaceShip={handlePlaceShip}
-        handleClickCell={handleClickCell}
         handleChangeShipPosition={handleChangeShipPosition}
       />
       <ShipsContainer
