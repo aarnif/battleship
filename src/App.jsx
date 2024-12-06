@@ -4,6 +4,7 @@ import Player from "../classes/Player.js";
 import Ai from "../classes/Ai.js";
 import PlaceShips from "./components/PlaceShips.jsx";
 import GameBoard from "./components/GameBoard.jsx";
+import GameOverModal from "./GameOverModal.jsx";
 
 const player = new Player("Player");
 const ai = new Ai("Computer");
@@ -178,22 +179,13 @@ const App = () => {
           </button>
         </div>
       )}
-      <dialog ref={newGameRef}>
-        <div className="w-[500px] h-[280px] bg-white flex flex-col justify-center items-center">
-          <h1 className="text-3xl font-bold mb-2">Game Over!</h1>
-          <h2 className="text-2xl mb-2">{gameOverMessage}</h2>
-          <h3 className="text-2xl mb-2">Game lasted {rounds} rounds.</h3>
 
-          <div className="flex justify-around w-full">
-            <button
-              className="text-2xl font-bold"
-              onClick={handleClickRestartGame}
-            >
-              New Game
-            </button>
-          </div>
-        </div>
-      </dialog>
+      <GameOverModal
+        newGameRef={newGameRef}
+        gameOverMessage={gameOverMessage}
+        rounds={rounds}
+        handleClickRestartGame={handleClickRestartGame}
+      />
     </div>
   );
 };
