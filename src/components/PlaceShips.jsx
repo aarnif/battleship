@@ -1,4 +1,7 @@
 import { useState, useEffect } from "react";
+import { AnimatePresence, motion } from "framer-motion";
+
+const animationTransitionTime = 0.4;
 
 const FreeCell = ({ shipNames, content, y, x, handlePlaceShip }) => {
   const [bgColor, setBgColor] = useState("white");
@@ -88,6 +91,7 @@ const ShipPlacementBoard = ({
   handleDragStart,
   handlePlaceShip,
   handleChangeShipPosition,
+  areAllShipsPlaced,
 }) => {
   const generateGridTemplate = (array) =>
     array
@@ -103,7 +107,16 @@ const ShipPlacementBoard = ({
 
   const gridTemplateAreas = `'${generateGridTemplate(gameBoard)}'`;
   return (
-    <div className="flex flex-col items-center">
+    <motion.div
+      className="relative flex flex-col items-center"
+      initial={{ opacity: 0, transform: "translateX(50%)" }}
+      animate={{
+        opacity: 1,
+        left: areAllShipsPlaced ? "50%" : 0,
+        transform: areAllShipsPlaced ? "translateX(-50%)" : "translateX(0)",
+      }}
+      transition={{ duration: animationTransitionTime }}
+    >
       <h2 className="text-2xl font-bold">{playerName}</h2>
       <div
         style={{
@@ -130,7 +143,7 @@ const ShipPlacementBoard = ({
           />
         ))}
       </div>
-    </div>
+    </motion.div>
   );
 };
 
@@ -140,7 +153,13 @@ const ShipsContainer = ({ shipTypes, shipNames, handleDragStart }) => {
   );
 
   return (
-    <div className="flex flex-col items-center">
+    <motion.div
+      className="relative flex flex-col items-center"
+      initial={{ opacity: 0, transform: "translateX(-50%)" }}
+      animate={{ opacity: 1, transform: "translateX(0)" }}
+      exit={{ opacity: 0, transform: "translateX(-50%)" }}
+      transition={{ duration: animationTransitionTime }}
+    >
       <h2 className="text-2xl font-bold">Ships</h2>
       <div className="w-[480px] h-[480px] p-8 flex flex-col items-start border border-black">
         {unPlacedShips.map((ship) => (
@@ -159,7 +178,7 @@ const ShipsContainer = ({ shipTypes, shipNames, handleDragStart }) => {
           </div>
         ))}
       </div>
-    </div>
+    </motion.div>
   );
 };
 
@@ -180,8 +199,9 @@ const PlaceShips = ({
   };
 
   return (
-    <div className="flex-grow flex justify-center items-center">
+    <div className="flex-grow flex justify-between items-center">
       <ShipPlacementBoard
+        key="ship-placement-board"
         playerName={playerName}
         gameBoard={gameBoard}
         ships={ships}
@@ -189,14 +209,18 @@ const PlaceShips = ({
         handleDragStart={handleDragStart}
         handlePlaceShip={handlePlaceShip}
         handleChangeShipPosition={handleChangeShipPosition}
+        areAllShipsPlaced={areAllShipsPlaced}
       />
-      {!areAllShipsPlaced && (
-        <ShipsContainer
-          shipTypes={shipTypes}
-          shipNames={shipNames}
-          handleDragStart={handleDragStart}
-        />
-      )}
+      <AnimatePresence>
+        {!areAllShipsPlaced && (
+          <ShipsContainer
+            key="ships-container"
+            shipTypes={shipTypes}
+            shipNames={shipNames}
+            handleDragStart={handleDragStart}
+          />
+        )}
+      </AnimatePresence>
     </div>
   );
 };
