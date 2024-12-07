@@ -127,6 +127,18 @@ const App = () => {
     setAreAllShipsPlaced(true);
   };
 
+  const playerGameBoardVariants = {
+    initial: { opacity: 0, left: "50%", transform: "translateX(-50%)" },
+    animate: { opacity: 1, left: 0, transform: "translateX(0)" },
+    transition: { duration: 0.5 },
+  };
+
+  const computerGameBoardVariants = {
+    initial: { opacity: 0, right: "50%", transform: "translateX(50%)" },
+    animate: { opacity: 1, right: 0, transform: "translateX(0)" },
+    transition: { duration: 0.5 },
+  };
+
   return (
     <div className="w-full max-w-[1200px] flex-grow flex flex-col items-center">
       {isGameOn ? (
@@ -136,6 +148,7 @@ const App = () => {
             playerName={playerName}
             gameBoard={playerGameBoard}
             ships={player.gameBoard.ships}
+            variants={playerGameBoardVariants}
           />
           <GameBoard
             key={"Computer"}
@@ -143,22 +156,21 @@ const App = () => {
             gameBoard={aiGameBoard}
             ships={ai.gameBoard.ships}
             handleClickCell={handleClickCell}
+            variants={computerGameBoardVariants}
           />
         </div>
       ) : (
-        <>
-          <div className="w-full flex-grow flex justify-between items-center">
-            <PlaceShips
-              playerName={playerName}
-              gameBoard={playerGameBoard}
-              shipTypes={player.gameBoard.shipTypes}
-              ships={player.gameBoard.ships}
-              handlePlaceShip={handlePlaceShip}
-              handleChangeShipPosition={handleChangeShipPosition}
-              areAllShipsPlaced={areAllShipsPlaced}
-            />
-          </div>
-        </>
+        <div className="w-full flex-grow flex justify-between items-center">
+          <PlaceShips
+            playerName={playerName}
+            gameBoard={playerGameBoard}
+            shipTypes={player.gameBoard.shipTypes}
+            ships={player.gameBoard.ships}
+            handlePlaceShip={handlePlaceShip}
+            handleChangeShipPosition={handleChangeShipPosition}
+            areAllShipsPlaced={areAllShipsPlaced}
+          />
+        </div>
       )}
       {areAllShipsPlaced ? (
         <div className="w-full flex-grow flex justify-center items-center">

@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { motion } from "framer-motion";
 
 const Cell = ({
   playerName,
@@ -79,10 +80,15 @@ const GameBoard = ({
   gameBoard,
   ships,
   handleClickCell = null,
+  variants,
 }) => {
   const shipNames = ships.map((ship) => ship.name);
   return (
-    <div className="flex flex-col items-center">
+    <motion.div
+      {...variants}
+      className="relative flex flex-col items-center"
+      style={{ zIndex: playerName === "Player" && 100 }}
+    >
       <h2 className="text-2xl font-bold">{playerName}</h2>
       <div
         style={{
@@ -105,7 +111,7 @@ const GameBoard = ({
           ))
         )}
       </div>
-    </div>
+    </motion.div>
   );
 };
 
