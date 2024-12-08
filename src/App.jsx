@@ -6,6 +6,7 @@ import Ai from "../classes/Ai.js";
 import PlaceShips from "./components/PlaceShips.jsx";
 import GameBoard from "./components/GameBoard.jsx";
 import GameOverModal from "./GameOverModal.jsx";
+import GameButton from "./GameButton.jsx";
 
 const player = new Player("Player");
 const ai = new Ai("Computer");
@@ -182,25 +183,13 @@ const App = () => {
         )}
       </AnimatePresence>
 
-      {areAllShipsPlaced ? (
-        <div className="w-full flex-grow flex justify-center items-center">
-          <button
-            className="text-2xl font-bold"
-            onClick={isGameOn ? handleClickRestartGame : handleClickNewGame}
-          >
-            {isGameOn ? "Restart Game" : "Start Game"}
-          </button>
-        </div>
-      ) : (
-        <div className="w-full flex-grow flex justify-center items-center">
-          <button
-            className="text-2xl font-bold"
-            onClick={handlePlaceShipsRandomly}
-          >
-            Place Ships Randomly
-          </button>
-        </div>
-      )}
+      <GameButton
+        areAllShipsPlaced={areAllShipsPlaced}
+        isGameOn={isGameOn}
+        handleClickNewGame={handleClickNewGame}
+        handleClickRestartGame={handleClickRestartGame}
+        handlePlaceShipsRandomly={handlePlaceShipsRandomly}
+      />
 
       <GameOverModal
         newGameRef={newGameRef}
