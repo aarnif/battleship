@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 
 const animationTransitionTime = 0.4;
+const animationDelayTime = 0.4;
 
 const FreeCell = ({ shipNames, content, y, x, handlePlaceShip }) => {
   const [bgColor, setBgColor] = useState("white");
@@ -110,7 +111,7 @@ const ShipPlacementBoard = ({
     <motion.div
       className="relative flex flex-col items-center"
       style={{ zIndex: 100 }}
-      initial={{ opacity: 1, transform: "translateX(50%)" }}
+      initial={{ opacity: 1, left: "50%", transform: "translateX(-50%)" }}
       animate={{
         opacity: 1,
         left: areAllShipsPlaced ? "50%" : 0,
@@ -118,6 +119,7 @@ const ShipPlacementBoard = ({
       }}
       transition={{
         duration: animationTransitionTime,
+        delay: animationDelayTime,
       }}
     >
       <h2 className="text-2xl font-bold">{playerName}</h2>
@@ -158,14 +160,16 @@ const ShipsContainer = ({ shipTypes, shipNames, handleDragStart }) => {
   return (
     <motion.div
       className="relative flex flex-col items-center"
-      initial={{ opacity: 1, transform: "translateX(-50%)" }}
+      initial={{ opacity: 0, right: "50%", transform: "translateX(50%)" }}
       animate={{
         opacity: 1,
+        right: 0,
         transform: "translateX(0)",
       }}
-      exit={{ opacity: 1, transform: "translateX(-50%)" }}
+      exit={{ opacity: 1, right: "50%", transform: "translateX(50%)" }}
       transition={{
         duration: animationTransitionTime,
+        delay: animationDelayTime,
       }}
     >
       <h2 className="text-2xl font-bold">Ships</h2>
