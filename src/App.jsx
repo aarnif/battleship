@@ -1,4 +1,5 @@
 import { useState, useRef } from "react";
+import { AnimatePresence, motion } from "framer-motion";
 
 import Player from "../classes/Player.js";
 import Ai from "../classes/Ai.js";
@@ -128,50 +129,59 @@ const App = () => {
   };
 
   const playerGameBoardVariants = {
-    initial: { opacity: 0, left: "50%", transform: "translateX(-50%)" },
+    initial: { opacity: 1, left: "50%", transform: "translateX(-50%)" },
     animate: { opacity: 1, left: 0, transform: "translateX(0)" },
-    transition: { duration: 0.5 },
+    exit: { opacity: 1, left: "50%", transform: "translateX(-50%)" },
   };
 
   const computerGameBoardVariants = {
-    initial: { opacity: 0, right: "50%", transform: "translateX(50%)" },
+    initial: { opacity: 1, right: "50%", transform: "translateX(50%)" },
     animate: { opacity: 1, right: 0, transform: "translateX(0)" },
-    transition: { duration: 0.5 },
+    exit: { opacity: 1, right: "50%", transform: "translateX(50%)" },
   };
 
   return (
     <div className="w-full max-w-[1200px] flex-grow flex flex-col items-center">
-      {isGameOn ? (
-        <div className="w-full flex-grow flex justify-between items-center">
-          <GameBoard
-            key={"Player"}
-            playerName={playerName}
-            gameBoard={playerGameBoard}
-            ships={player.gameBoard.ships}
-            variants={playerGameBoardVariants}
-          />
-          <GameBoard
-            key={"Computer"}
-            playerName={aiName}
-            gameBoard={aiGameBoard}
-            ships={ai.gameBoard.ships}
-            handleClickCell={handleClickCell}
-            variants={computerGameBoardVariants}
-          />
-        </div>
-      ) : (
-        <div className="w-full flex-grow flex justify-between items-center">
-          <PlaceShips
-            playerName={playerName}
-            gameBoard={playerGameBoard}
-            shipTypes={player.gameBoard.shipTypes}
-            ships={player.gameBoard.ships}
-            handlePlaceShip={handlePlaceShip}
-            handleChangeShipPosition={handleChangeShipPosition}
-            areAllShipsPlaced={areAllShipsPlaced}
-          />
-        </div>
-      )}
+      <AnimatePresence mode="wait">
+        {isGameOn ? (
+          <motion.div
+            key="game-mode"
+            className="w-full flex-grow flex justify-between items-center"
+          >
+            <GameBoard
+              key="Player"
+              playerName={playerName}
+              gameBoard={playerGameBoard}
+              ships={player.gameBoard.ships}
+              variants={playerGameBoardVariants}
+            />
+            <GameBoard
+              key="Computer"
+              playerName={aiName}
+              gameBoard={aiGameBoard}
+              ships={ai.gameBoard.ships}
+              handleClickCell={handleClickCell}
+              variants={computerGameBoardVariants}
+            />
+          </motion.div>
+        ) : (
+          <motion.div
+            key="place-ships-mode"
+            className="w-full flex-grow flex justify-between items-center"
+          >
+            <PlaceShips
+              playerName={playerName}
+              gameBoard={playerGameBoard}
+              shipTypes={player.gameBoard.shipTypes}
+              ships={player.gameBoard.ships}
+              handlePlaceShip={handlePlaceShip}
+              handleChangeShipPosition={handleChangeShipPosition}
+              areAllShipsPlaced={areAllShipsPlaced}
+            />
+          </motion.div>
+        )}
+      </AnimatePresence>
+
       {areAllShipsPlaced ? (
         <div className="w-full flex-grow flex justify-center items-center">
           <button

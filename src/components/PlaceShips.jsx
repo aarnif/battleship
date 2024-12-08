@@ -109,13 +109,16 @@ const ShipPlacementBoard = ({
   return (
     <motion.div
       className="relative flex flex-col items-center"
-      initial={{ opacity: 0, transform: "translateX(50%)" }}
+      style={{ zIndex: 100 }}
+      initial={{ opacity: 1, transform: "translateX(50%)" }}
       animate={{
         opacity: 1,
         left: areAllShipsPlaced ? "50%" : 0,
         transform: areAllShipsPlaced ? "translateX(-50%)" : "translateX(0)",
       }}
-      transition={{ duration: animationTransitionTime }}
+      transition={{
+        duration: animationTransitionTime,
+      }}
     >
       <h2 className="text-2xl font-bold">{playerName}</h2>
       <div
@@ -155,10 +158,15 @@ const ShipsContainer = ({ shipTypes, shipNames, handleDragStart }) => {
   return (
     <motion.div
       className="relative flex flex-col items-center"
-      initial={{ opacity: 0, transform: "translateX(-50%)" }}
-      animate={{ opacity: 1, transform: "translateX(0)" }}
-      exit={{ opacity: 0, transform: "translateX(-50%)" }}
-      transition={{ duration: animationTransitionTime }}
+      initial={{ opacity: 1, transform: "translateX(-50%)" }}
+      animate={{
+        opacity: 1,
+        transform: "translateX(0)",
+      }}
+      exit={{ opacity: 1, transform: "translateX(-50%)" }}
+      transition={{
+        duration: animationTransitionTime,
+      }}
     >
       <h2 className="text-2xl font-bold">Ships</h2>
       <div className="w-[480px] h-[480px] p-8 flex flex-col items-start border border-black">
@@ -199,7 +207,7 @@ const PlaceShips = ({
   };
 
   return (
-    <div className="flex-grow flex justify-between items-center">
+    <>
       <ShipPlacementBoard
         key="ship-placement-board"
         playerName={playerName}
@@ -221,7 +229,7 @@ const PlaceShips = ({
           />
         )}
       </AnimatePresence>
-    </div>
+    </>
   );
 };
 

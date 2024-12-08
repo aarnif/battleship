@@ -13,7 +13,7 @@ const Cell = ({
   const [bgColor, setBgColor] = useState("white");
 
   const changeBgColor = () => {
-    if (shipNames.includes(content) && playerName === "Player") {
+    if (shipNames.includes(content)) {
       setBgColor("#6b7280");
     } else if (content === "miss") {
       setBgColor("#ef4444");
@@ -86,6 +86,7 @@ const GameBoard = ({
   return (
     <motion.div
       {...variants}
+      transition={{ duration: 0.5 }}
       className="relative flex flex-col items-center"
       style={{ zIndex: playerName === "Player" && 100 }}
     >
