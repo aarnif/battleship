@@ -1,8 +1,8 @@
 import { useState, useEffect } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 
-const animationTransitionTime = 0.4;
-const animationDelayTime = 0.4;
+const animationTransitionTime = 0.5;
+const animationDelayTime = 0.5;
 
 const FreeCell = ({ shipNames, content, y, x, handlePlaceShip }) => {
   const [bgColor, setBgColor] = useState("white");
@@ -58,13 +58,15 @@ const FreeCell = ({ shipNames, content, y, x, handlePlaceShip }) => {
 
 const PlacedShip = ({ ship, handleDragStart, handleChangeShipPosition }) => {
   return (
-    <div
+    <motion.div
       key={ship.name}
       style={{
         gridArea: ship.name,
         display: "flex",
         flexDirection: ship.position === "horizontal" ? "row" : "column",
       }}
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
       className="group"
       draggable={true}
       onDragStart={(e) => handleDragStart(e, ship)}
@@ -80,7 +82,7 @@ const PlacedShip = ({ ship, handleDragStart, handleChangeShipPosition }) => {
           className="w-12 h-12 border border-black bg-gray-500 group-hover:bg-gray-600"
         ></div>
       ))}
-    </div>
+    </motion.div>
   );
 };
 
@@ -116,10 +118,10 @@ const ShipPlacementBoard = ({
         opacity: 1,
         left: areAllShipsPlaced ? "50%" : 0,
         transform: areAllShipsPlaced ? "translateX(-50%)" : "translateX(0)",
+        transition: { delay: animationDelayTime },
       }}
       transition={{
         duration: animationTransitionTime,
-        delay: animationDelayTime,
       }}
     >
       <h2 className="text-2xl font-bold">{playerName}</h2>
@@ -165,11 +167,16 @@ const ShipsContainer = ({ shipTypes, shipNames, handleDragStart }) => {
         opacity: 1,
         right: 0,
         transform: "translateX(0)",
+        transition: { delay: animationDelayTime },
       }}
-      exit={{ opacity: 1, right: "50%", transform: "translateX(50%)" }}
+      exit={{
+        opacity: 1,
+        right: "50%",
+        transform: "translateX(50%)",
+        transition: { delay: animationDelayTime },
+      }}
       transition={{
         duration: animationTransitionTime,
-        delay: animationDelayTime,
       }}
     >
       <h2 className="text-2xl font-bold">Ships</h2>
