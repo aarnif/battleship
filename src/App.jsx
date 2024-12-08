@@ -5,8 +5,8 @@ import Player from "../classes/Player.js";
 import Ai from "../classes/Ai.js";
 import PlaceShips from "./components/PlaceShips.jsx";
 import GameBoard from "./components/GameBoard.jsx";
-import GameOverModal from "./GameOverModal.jsx";
-import GameButton from "./GameButton.jsx";
+import GameOverModal from "./components/GameOverModal.jsx";
+import GameButton from "./components/GameButton.jsx";
 
 const player = new Player("Player");
 const ai = new Ai("Computer");
