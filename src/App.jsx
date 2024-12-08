@@ -3,10 +3,12 @@ import { AnimatePresence, motion } from "framer-motion";
 
 import Player from "../classes/Player.js";
 import Ai from "../classes/Ai.js";
+import Header from "./components/Header.jsx";
 import PlaceShips from "./components/PlaceShips.jsx";
 import GameBoard from "./components/GameBoard.jsx";
 import GameOverModal from "./components/GameOverModal.jsx";
 import GameButton from "./components/GameButton.jsx";
+import Footer from "./components/Footer.jsx";
 
 const player = new Player("Player");
 const ai = new Ai("Computer");
@@ -142,62 +144,66 @@ const App = () => {
   };
 
   return (
-    <div className="w-full max-w-[1200px] flex-grow flex flex-col items-center">
-      <AnimatePresence mode="wait">
-        {isGameOn ? (
-          <motion.div
-            key="game-mode"
-            className="w-full flex-grow flex justify-between items-center"
-          >
-            <GameBoard
-              key="Player"
-              playerName={playerName}
-              gameBoard={playerGameBoard}
-              ships={player.gameBoard.ships}
-              variants={playerGameBoardVariants}
-            />
-            <GameBoard
-              key="Computer"
-              playerName={aiName}
-              gameBoard={aiGameBoard}
-              ships={ai.gameBoard.ships}
-              handleClickCell={handleClickCell}
-              variants={computerGameBoardVariants}
-            />
-          </motion.div>
-        ) : (
-          <motion.div
-            key="place-ships-mode"
-            className="w-full flex-grow flex justify-between items-center"
-          >
-            <PlaceShips
-              playerName={playerName}
-              gameBoard={playerGameBoard}
-              shipTypes={player.gameBoard.shipTypes}
-              ships={player.gameBoard.ships}
-              handlePlaceShip={handlePlaceShip}
-              handleChangeShipPosition={handleChangeShipPosition}
-              areAllShipsPlaced={areAllShipsPlaced}
-            />
-          </motion.div>
-        )}
-      </AnimatePresence>
+    <>
+      <Header />
+      <div className="w-full max-w-[1200px] flex-grow flex flex-col items-center">
+        <AnimatePresence mode="wait">
+          {isGameOn ? (
+            <motion.div
+              key="game-mode"
+              className="w-full flex-grow flex justify-between items-center"
+            >
+              <GameBoard
+                key="Player"
+                playerName={playerName}
+                gameBoard={playerGameBoard}
+                ships={player.gameBoard.ships}
+                variants={playerGameBoardVariants}
+              />
+              <GameBoard
+                key="Computer"
+                playerName={aiName}
+                gameBoard={aiGameBoard}
+                ships={ai.gameBoard.ships}
+                handleClickCell={handleClickCell}
+                variants={computerGameBoardVariants}
+              />
+            </motion.div>
+          ) : (
+            <motion.div
+              key="place-ships-mode"
+              className="w-full flex-grow flex justify-between items-center"
+            >
+              <PlaceShips
+                playerName={playerName}
+                gameBoard={playerGameBoard}
+                shipTypes={player.gameBoard.shipTypes}
+                ships={player.gameBoard.ships}
+                handlePlaceShip={handlePlaceShip}
+                handleChangeShipPosition={handleChangeShipPosition}
+                areAllShipsPlaced={areAllShipsPlaced}
+              />
+            </motion.div>
+          )}
+        </AnimatePresence>
 
-      <GameButton
-        areAllShipsPlaced={areAllShipsPlaced}
-        isGameOn={isGameOn}
-        handleClickNewGame={handleClickNewGame}
-        handleClickRestartGame={handleClickRestartGame}
-        handlePlaceShipsRandomly={handlePlaceShipsRandomly}
-      />
+        <GameButton
+          areAllShipsPlaced={areAllShipsPlaced}
+          isGameOn={isGameOn}
+          handleClickNewGame={handleClickNewGame}
+          handleClickRestartGame={handleClickRestartGame}
+          handlePlaceShipsRandomly={handlePlaceShipsRandomly}
+        />
 
-      <GameOverModal
-        newGameRef={newGameRef}
-        gameOverMessage={gameOverMessage}
-        rounds={rounds}
-        handleClickRestartGame={handleClickRestartGame}
-      />
-    </div>
+        <GameOverModal
+          newGameRef={newGameRef}
+          gameOverMessage={gameOverMessage}
+          rounds={rounds}
+          handleClickRestartGame={handleClickRestartGame}
+        />
+      </div>
+      <Footer />
+    </>
   );
 };
 
