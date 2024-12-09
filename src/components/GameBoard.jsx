@@ -94,7 +94,7 @@ const GameBoard = ({
       className="relative flex flex-col items-center"
       style={{ zIndex: playerName === "Player" && 10 }}
     >
-      <h2 className="text-2xl font-bold">{playerName}</h2>
+      <h2 className="mb-2 text-3xl font-bold">{playerName}</h2>
       <div
         style={{
           display: "grid",

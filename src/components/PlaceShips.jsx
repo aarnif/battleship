@@ -127,7 +127,7 @@ const ShipPlacementBoard = ({
         duration: animationTransitionTime,
       }}
     >
-      <h2 className="text-2xl font-bold">{playerName}</h2>
+      <h2 className="mb-2 text-3xl font-bold">{playerName}</h2>
       <div
         style={{
           display: "grid",
@@ -182,12 +182,12 @@ const ShipsContainer = ({ shipTypes, shipNames, handleDragStart }) => {
         duration: animationTransitionTime,
       }}
     >
-      <h2 className="text-2xl font-bold">Ships</h2>
+      <h2 className="mb-2 text-3xl font-bold">Ships</h2>
       <div className="w-[480px] h-[480px] p-8 flex flex-col items-start border border-black bg-cell">
         {unPlacedShips.map((ship) => (
           <div
             key={ship.name}
-            className="flex-grow flex hover:cursor-pointer group"
+            className="mb-8 flex hover:cursor-pointer group"
             draggable={true}
             onDragStart={(e) => handleDragStart(e, ship)}
           >
