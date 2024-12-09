@@ -4,6 +4,8 @@ import { motion } from "framer-motion";
 import tailwindConfig from "../../tailwind.config";
 
 const Cell = ({ playerName, shipNames, content, y, x, handleClickCell }) => {
+  const isCellUnclicked =
+    playerName === "Computer" && content !== "miss" && content !== "hit";
   const [bgColor, setBgColor] = useState(
     tailwindConfig.theme.extend.colors.cell.DEFAULT
   );
@@ -26,7 +28,7 @@ const Cell = ({ playerName, shipNames, content, y, x, handleClickCell }) => {
 
   const handleOnMouseOver = (e) => {
     e.preventDefault();
-    if (playerName === "Computer") {
+    if (isCellUnclicked) {
       setBgColor(tailwindConfig.theme.extend.colors.cell.hover);
     }
   };
@@ -46,7 +48,7 @@ const Cell = ({ playerName, shipNames, content, y, x, handleClickCell }) => {
       id={`${x}-${y}`}
       style={{
         backgroundColor: bgColor,
-        cursor: handleClickCell ? "pointer" : "default",
+        cursor: isCellUnclicked ? "pointer" : "default",
       }}
       className="w-12 h-12 border border-black"
     ></button>
