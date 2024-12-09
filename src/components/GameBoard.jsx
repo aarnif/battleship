@@ -1,6 +1,8 @@
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 
+import tailwindConfig from "../../tailwind.config";
+
 const Cell = ({
   playerName,
   shipNames,
@@ -10,17 +12,19 @@ const Cell = ({
   handleClickCell,
   handlePlaceShip,
 }) => {
-  const [bgColor, setBgColor] = useState("white");
+  const [bgColor, setBgColor] = useState(
+    tailwindConfig.theme.extend.colors.cell.DEFAULT
+  );
 
   const changeBgColor = () => {
     if (shipNames.includes(content)) {
-      setBgColor("#6b7280");
+      setBgColor(tailwindConfig.theme.extend.colors.shipCell.DEFAULT);
     } else if (content === "miss") {
-      setBgColor("#ef4444");
+      setBgColor(tailwindConfig.theme.extend.colors.cell.miss);
     } else if (content === "hit") {
-      setBgColor("#22c55e");
+      setBgColor(tailwindConfig.theme.extend.colors.cell.hit);
     } else {
-      setBgColor("white");
+      setBgColor(tailwindConfig.theme.extend.colors.cell.DEFAULT);
     }
   };
 
@@ -30,22 +34,22 @@ const Cell = ({
 
   const handleDragOver = (e) => {
     e.preventDefault();
-    setBgColor("#6b7280");
+    setBgColor(tailwindConfig.theme.extend.colors.shipCell.DEFAULT);
   };
 
   const handleDragLeave = (e) => {
     e.preventDefault();
     if (shipNames.includes(content)) {
-      setBgColor("#6b7280");
+      setBgColor(tailwindConfig.theme.extend.colors.shipCell.DEFAULT);
     } else {
-      setBgColor("white");
+      setBgColor(tailwindConfig.theme.extend.colors.cell.DEFAULT);
     }
   };
 
   const handleOnMouseOver = (e) => {
     e.preventDefault();
     if (playerName === "Computer") {
-      setBgColor("#d1d5db");
+      setBgColor(tailwindConfig.theme.extend.colors.cell.hover);
     }
   };
 
@@ -88,7 +92,7 @@ const GameBoard = ({
       {...variants}
       transition={{ duration: 0.5 }}
       className="relative flex flex-col items-center"
-      style={{ zIndex: playerName === "Player" && 100 }}
+      style={{ zIndex: playerName === "Player" && 10 }}
     >
       <h2 className="text-2xl font-bold">{playerName}</h2>
       <div

@@ -1,17 +1,20 @@
 import { useState, useEffect } from "react";
 import { AnimatePresence, motion } from "framer-motion";
+import tailwindConfig from "../../tailwind.config";
 
 const animationTransitionTime = 0.5;
 const animationDelayTime = 0.5;
 
 const FreeCell = ({ shipNames, content, y, x, handlePlaceShip }) => {
-  const [bgColor, setBgColor] = useState("white");
+  const [bgColor, setBgColor] = useState(
+    tailwindConfig.theme.extend.colors.cell.DEFAULT
+  );
 
   const changeBgColor = () => {
     if (shipNames.includes(content)) {
-      setBgColor("#6b7280");
+      setBgColor(tailwindConfig.theme.extend.colors.shipCell.DEFAULT);
     } else {
-      setBgColor("white");
+      setBgColor(tailwindConfig.theme.extend.colors.cell.DEFAULT);
     }
   };
 
@@ -21,15 +24,15 @@ const FreeCell = ({ shipNames, content, y, x, handlePlaceShip }) => {
 
   const handleDragOver = (e) => {
     e.preventDefault();
-    setBgColor("#6b7280");
+    setBgColor(tailwindConfig.theme.extend.colors.shipCell.DEFAULT);
   };
 
   const handleDragLeave = (e) => {
     e.preventDefault();
     if (shipNames.includes(content)) {
-      setBgColor("#6b7280");
+      setBgColor(tailwindConfig.theme.extend.colors.shipCell.DEFAULT);
     } else {
-      setBgColor("white");
+      setBgColor(tailwindConfig.theme.extend.colors.cell.DEFAULT);
     }
   };
 
@@ -79,7 +82,7 @@ const PlacedShip = ({ ship, handleDragStart, handleChangeShipPosition }) => {
           style={{
             cursor: "pointer",
           }}
-          className="w-12 h-12 border border-black bg-gray-500 group-hover:bg-gray-600"
+          className="w-12 h-12 border border-black bg-shipCell group-hover:bg-shipCell-hover"
         ></div>
       ))}
     </motion.div>
@@ -112,7 +115,7 @@ const ShipPlacementBoard = ({
   return (
     <motion.div
       className="relative flex flex-col items-center"
-      style={{ zIndex: 100 }}
+      style={{ zIndex: 10 }}
       initial={{ opacity: 1, left: "50%", transform: "translateX(-50%)" }}
       animate={{
         opacity: 1,
@@ -180,7 +183,7 @@ const ShipsContainer = ({ shipTypes, shipNames, handleDragStart }) => {
       }}
     >
       <h2 className="text-2xl font-bold">Ships</h2>
-      <div className="w-[480px] h-[480px] p-8 flex flex-col items-start border border-black">
+      <div className="w-[480px] h-[480px] p-8 flex flex-col items-start border border-black bg-cell">
         {unPlacedShips.map((ship) => (
           <div
             key={ship.name}
@@ -191,7 +194,7 @@ const ShipsContainer = ({ shipTypes, shipNames, handleDragStart }) => {
             {[...Array(ship.length).keys()].map((index) => (
               <div
                 key={`${ship.name}-${index}`}
-                className="w-12 h-12 border border-black bg-gray-500 group-hover:bg-gray-600"
+                className="w-12 h-12 border border-black bg-shipCell group-hover:bg-shipCell-hover"
               ></div>
             ))}
           </div>
