@@ -3,21 +3,13 @@ import { motion } from "framer-motion";
 
 import tailwindConfig from "../../tailwind.config";
 
-const Cell = ({
-  playerName,
-  shipNames,
-  content,
-  y,
-  x,
-  handleClickCell,
-  handlePlaceShip,
-}) => {
+const Cell = ({ playerName, shipNames, content, y, x, handleClickCell }) => {
   const [bgColor, setBgColor] = useState(
     tailwindConfig.theme.extend.colors.cell.DEFAULT
   );
 
   const changeBgColor = () => {
-    if (shipNames.includes(content)) {
+    if (shipNames.includes(content) && playerName === "Player") {
       setBgColor(tailwindConfig.theme.extend.colors.shipCell.DEFAULT);
     } else if (content === "miss") {
       setBgColor(tailwindConfig.theme.extend.colors.cell.miss);
@@ -31,20 +23,6 @@ const Cell = ({
   useEffect(() => {
     changeBgColor();
   }, [content]);
-
-  const handleDragOver = (e) => {
-    e.preventDefault();
-    setBgColor(tailwindConfig.theme.extend.colors.shipCell.DEFAULT);
-  };
-
-  const handleDragLeave = (e) => {
-    e.preventDefault();
-    if (shipNames.includes(content)) {
-      setBgColor(tailwindConfig.theme.extend.colors.shipCell.DEFAULT);
-    } else {
-      setBgColor(tailwindConfig.theme.extend.colors.cell.DEFAULT);
-    }
-  };
 
   const handleOnMouseOver = (e) => {
     e.preventDefault();
@@ -61,10 +39,6 @@ const Cell = ({
   return (
     <button
       onClick={handleClickCell ? () => handleClickCell(x, y) : null}
-      onDrag={handlePlaceShip ? (e) => e.preventDefault() : null}
-      onDragOver={handleDragOver}
-      onDragLeave={handleDragLeave}
-      onDrop={handlePlaceShip ? (e) => handlePlaceShip(e, setBgColor) : null}
       onMouseOver={handleOnMouseOver}
       onMouseLeave={handleMouseLeave}
       data-shipname={content}
