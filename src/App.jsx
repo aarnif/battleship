@@ -23,6 +23,7 @@ const App = () => {
   const [clickedCells, setClickedCells] = useState([]);
   const [areAllShipsPlaced, setAreAllShipsPlaced] = useState(false);
   const [isGameOn, setIsGameOn] = useState(false);
+  const [showGameOverModal, setShowGameOverModal] = useState(false);
   const [gameOverMessage, setGameOverMessage] = useState("");
 
   const handleClickNewGame = () => {
@@ -68,7 +69,7 @@ const App = () => {
 
     if (checkIfGameOver(player, ai)) {
       console.log(`Game lasted ${rounds} rounds.`);
-      newGameRef.current.showModal();
+      setShowGameOverModal(true);
     }
 
     setRounds((prevState) => prevState + 1);
@@ -83,7 +84,7 @@ const App = () => {
     setPlayerGameBoard(player.getBoard());
     setIsGameOn(false);
     setAreAllShipsPlaced(false);
-    newGameRef.current.close();
+    setShowGameOverModal(false);
   };
 
   const handlePlaceShip = (e, setBgColor) => {
@@ -126,6 +127,7 @@ const App = () => {
   };
 
   const handlePlaceShipsRandomly = () => {
+    player.gameBoard.reset();
     player.gameBoard.placeShipsRandomly();
     setPlayerGameBoard(player.getBoard());
     setAreAllShipsPlaced(true);
@@ -146,12 +148,12 @@ const App = () => {
   return (
     <>
       <Header />
-      <div className="w-full max-w-[1200px] flex-grow flex flex-col items-center">
+      <div className="w-full max-w-[1200px] flex-grow flex flex-col justify-center items-center">
         <AnimatePresence mode="wait">
           {isGameOn ? (
             <motion.div
               key="game-mode"
-              className="w-full flex-grow flex justify-between items-center"
+              className="w-full flex justify-between items-center"
             >
               <GameBoard
                 key="Player"
@@ -172,7 +174,7 @@ const App = () => {
           ) : (
             <motion.div
               key="place-ships-mode"
-              className="w-full flex-grow flex justify-between items-center"
+              className="w-full flex justify-between items-center"
             >
               <PlaceShips
                 playerName={playerName}
@@ -195,12 +197,13 @@ const App = () => {
           handlePlaceShipsRandomly={handlePlaceShipsRandomly}
         />
 
-        <GameOverModal
-          newGameRef={newGameRef}
-          gameOverMessage={gameOverMessage}
-          rounds={rounds}
-          handleClickRestartGame={handleClickRestartGame}
-        />
+        {showGameOverModal && (
+          <GameOverModal
+            gameOverMessage={gameOverMessage}
+            rounds={rounds}
+            handleClickRestartGame={handleClickRestartGame}
+          />
+        )}
       </div>
       <Footer />
     </>
