@@ -1,4 +1,4 @@
-import { useState, useRef } from "react";
+import { useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 
 import Player from "../classes/Player.js";
@@ -14,7 +14,6 @@ const player = new Player("Player");
 const ai = new Ai("Computer");
 
 const App = () => {
-  const newGameRef = useRef(null);
   const [rounds, setRounds] = useState(1);
   const [playerName, setPlayerName] = useState(player.name);
   const [aiName, setAiName] = useState(ai.name);

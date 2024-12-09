@@ -16,7 +16,7 @@ const GameOverModal = ({ gameOverMessage, rounds, handleClickRestartGame }) => {
         initial={{ opacity: 0, scale: 0 }}
         animate={{ opacity: 1, scale: 1 }}
         transition={{ duration: animationTransitionTime }}
-        className="p-8 w-[500px] flex flex-col justify-center items-center rounded-xl bg-modal "
+        className="p-8 w-[500px] flex flex-col justify-center items-center rounded-xl bg-modal"
       >
         <h1 className="text-4xl font-extrabold my-4">Game Over!</h1>
         <h2 className="text-3xl font-bold mb-2">{gameOverMessage}</h2>
@@ -31,7 +31,7 @@ const GameOverModal = ({ gameOverMessage, rounds, handleClickRestartGame }) => {
               backgroundColor: tailwindConfig.theme.extend.colors.button.hover,
             }}
             whileTap={{ scale: 0.95 }}
-            className="p-8 flex-grow max-w-[300px] text-2xl font-bold bg-button rounded-xl"
+            className="p-8 flex-grow max-w-[300px] text-2xl font-bold bg-button border-2 border-border rounded-xl"
             onClick={handleClickRestartGame}
           >
             New Game

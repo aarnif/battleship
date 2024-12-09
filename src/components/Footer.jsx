@@ -3,7 +3,7 @@ import { motion } from "framer-motion";
 
 const Footer = () => {
   return (
-    <footer className="p-2 w-full flex flex-col justify-around items-center bg-footer">
+    <footer className="p-2 w-full flex flex-col justify-around items-center bg-footer shadow-xl">
       <ul className="flex justify-center items-center">
         <li className="px-1">
           <h3 className="text-xl font-bold">Created By aarnif</h3>

@@ -54,7 +54,7 @@ const FreeCell = ({ shipNames, content, y, x, handlePlaceShip }) => {
         backgroundColor: bgColor,
         cursor: "default",
       }}
-      className="w-12 h-12 border border-black group"
+      className="w-12 h-12 border border-border group"
     ></div>
   );
 };
@@ -82,7 +82,7 @@ const PlacedShip = ({ ship, handleDragStart, handleChangeShipPosition }) => {
           style={{
             cursor: "pointer",
           }}
-          className="w-12 h-12 border border-black bg-shipCell group-hover:bg-shipCell-hover"
+          className="w-12 h-12 border border-border bg-shipCell group-hover:bg-shipCell-hover"
         ></div>
       ))}
     </motion.div>
@@ -183,7 +183,7 @@ const ShipsContainer = ({ shipTypes, shipNames, handleDragStart }) => {
       }}
     >
       <h2 className="mb-2 text-3xl font-bold">Ships</h2>
-      <div className="w-[480px] h-[480px] p-8 flex flex-col items-start border border-black bg-cell">
+      <div className="w-[480px] h-[480px] p-8 flex flex-col items-start border border-border bg-cell">
         {unPlacedShips.map((ship) => (
           <div
             key={ship.name}
@@ -194,7 +194,7 @@ const ShipsContainer = ({ shipTypes, shipNames, handleDragStart }) => {
             {[...Array(ship.length).keys()].map((index) => (
               <div
                 key={`${ship.name}-${index}`}
-                className="w-12 h-12 border border-black bg-shipCell group-hover:bg-shipCell-hover"
+                className="w-12 h-12 border border-border bg-shipCell group-hover:bg-shipCell-hover"
               ></div>
             ))}
           </div>
