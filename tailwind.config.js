@@ -23,7 +23,7 @@ export default {
           hover: "#047857", // Very dark emerald (matches Tailwind's emerald-700)
         },
         footer: "#059669", // Matches bodyText for consistency (Tailwind's emerald-900)
-        backdrop: "rgba(0, 0, 0, 0.7)", // Backdrop color (semi-transparent black)
+        overlay: "rgba(0, 0, 0, 0.7)", // Backdrop color (semi-transparent black)
         modal: "#34d399", // Brighter emerald (matches Tailwind's emerald-400)
       },
     },
