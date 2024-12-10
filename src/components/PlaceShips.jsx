@@ -1,44 +1,42 @@
 import { useState, useEffect } from "react";
 import { AnimatePresence, motion } from "framer-motion";
-import tailwindConfig from "../../tailwind.config";
 
 const animationTransitionTime = 0.5;
 const animationDelayTime = 0.5;
 
 const FreeCell = ({ shipNames, content, y, x, handlePlaceShip }) => {
-  const [bgColor, setBgColor] = useState(
-    tailwindConfig.theme.extend.colors.cell.DEFAULT
-  );
+  const classStyles = {
+    free: "w-12 h-12 bg-cell border border-border group",
+    ship: "w-12 h-12 bg-shipCell border border-border group",
+  };
 
-  const changeBgColor = () => {
-    if (shipNames.includes(content)) {
-      setBgColor(tailwindConfig.theme.extend.colors.shipCell.DEFAULT);
-    } else {
-      setBgColor(tailwindConfig.theme.extend.colors.cell.DEFAULT);
-    }
+  const [cellStyle, setCellStyle] = useState(classStyles.free);
+
+  const changeCellStyle = () => {
+    setCellStyle(
+      shipNames.includes(content) ? classStyles.ship : classStyles.free
+    );
   };
 
   useEffect(() => {
-    changeBgColor();
+    changeCellStyle();
   }, [content]);
 
   const handleDragOver = (e) => {
     e.preventDefault();
-    setBgColor(tailwindConfig.theme.extend.colors.shipCell.DEFAULT);
+    setCellStyle(classStyles.ship);
   };
 
   const handleDragLeave = (e) => {
     e.preventDefault();
-    if (shipNames.includes(content)) {
-      setBgColor(tailwindConfig.theme.extend.colors.shipCell.DEFAULT);
-    } else {
-      setBgColor(tailwindConfig.theme.extend.colors.cell.DEFAULT);
-    }
+    setCellStyle(
+      shipNames.includes(content) ? classStyles.ship : classStyles.free
+    );
   };
 
   const handleMouseLeave = (e) => {
     e.preventDefault();
-    changeBgColor();
+    changeCellStyle();
   };
 
   return (
@@ -46,31 +44,30 @@ const FreeCell = ({ shipNames, content, y, x, handlePlaceShip }) => {
       onDrag={handlePlaceShip ? (e) => e.preventDefault() : null}
       onDragOver={handleDragOver}
       onDragLeave={handleDragLeave}
-      onDrop={handlePlaceShip ? (e) => handlePlaceShip(e, setBgColor) : null}
+      onDrop={handlePlaceShip ? (e) => handlePlaceShip(e, setCellStyle) : null}
       onMouseLeave={handleMouseLeave}
       key={`${x}-${y}`}
       id={`${x}-${y}`}
-      style={{
-        backgroundColor: bgColor,
-        cursor: "default",
-      }}
-      className="w-12 h-12 border border-border group"
+      className={cellStyle}
     ></div>
   );
 };
 
 const PlacedShip = ({ ship, handleDragStart, handleChangeShipPosition }) => {
+  const shipClasses = {
+    horizontal: "group flex",
+    vertical: "group flex flex-col",
+  };
+
   return (
     <motion.div
       key={ship.name}
       style={{
         gridArea: ship.name,
-        display: "flex",
-        flexDirection: ship.position === "horizontal" ? "row" : "column",
       }}
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
-      className="group"
+      className={shipClasses[ship.position]}
       draggable={true}
       onDragStart={(e) => handleDragStart(e, ship)}
       onClick={handleChangeShipPosition}
@@ -79,10 +76,7 @@ const PlacedShip = ({ ship, handleDragStart, handleChangeShipPosition }) => {
         <div
           data-shipname={ship.name}
           key={`${coordinate[0]}-${coordinate[1]}`}
-          style={{
-            cursor: "pointer",
-          }}
-          className="w-12 h-12 border border-border bg-shipCell group-hover:bg-shipCell-hover"
+          className="w-12 h-12 border border-border bg-shipCell group-hover:bg-shipCell-hover cursor-pointer"
         ></div>
       ))}
     </motion.div>
@@ -114,8 +108,7 @@ const ShipPlacementBoard = ({
   const gridTemplateAreas = `'${generateGridTemplate(gameBoard)}'`;
   return (
     <motion.div
-      className="relative flex flex-col items-center"
-      style={{ zIndex: 10 }}
+      className="z-10 relative flex flex-col items-center"
       initial={{ opacity: 1, left: "50%", transform: "translateX(-50%)" }}
       animate={{
         opacity: 1,
@@ -129,8 +122,8 @@ const ShipPlacementBoard = ({
     >
       <h2 className="mb-2 text-3xl font-bold">{playerName}</h2>
       <div
+        className="grid"
         style={{
-          display: "grid",
           gridTemplateAreas: gridTemplateAreas,
         }}
       >
