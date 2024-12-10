@@ -1,24 +1,26 @@
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 
-import tailwindConfig from "../../tailwind.config";
-
 const Cell = ({ playerName, shipNames, content, y, x, handleClickCell }) => {
-  const isCellUnclicked =
-    playerName === "Computer" && content !== "miss" && content !== "hit";
-  const [bgColor, setBgColor] = useState(
-    tailwindConfig.theme.extend.colors.cell.DEFAULT
-  );
+  const classStyles = {
+    default:
+      "w-12 h-12 bg-cell hover:bg-cell-hover border border-border group cursor-pointer",
+    ship: "w-12 h-12 bg-shipCell border border-border group cursor-pointer",
+    miss: "w-12 h-12 bg-cell-miss border border-border group cursor-default",
+    hit: "w-12 h-12 bg-cell-hit border border-border group cursor-default",
+  };
+
+  const [cellStyle, setCellStyle] = useState(classStyles.default);
 
   const changeBgColor = () => {
     if (shipNames.includes(content) && playerName === "Player") {
-      setBgColor(tailwindConfig.theme.extend.colors.shipCell.DEFAULT);
+      setCellStyle(classStyles.ship);
     } else if (content === "miss") {
-      setBgColor(tailwindConfig.theme.extend.colors.cell.miss);
+      setCellStyle(classStyles.miss);
     } else if (content === "hit") {
-      setBgColor(tailwindConfig.theme.extend.colors.cell.hit);
+      setCellStyle(classStyles.hit);
     } else {
-      setBgColor(tailwindConfig.theme.extend.colors.cell.DEFAULT);
+      setCellStyle(classStyles.default);
     }
   };
 
@@ -26,31 +28,13 @@ const Cell = ({ playerName, shipNames, content, y, x, handleClickCell }) => {
     changeBgColor();
   }, [content]);
 
-  const handleOnMouseOver = (e) => {
-    e.preventDefault();
-    if (isCellUnclicked) {
-      setBgColor(tailwindConfig.theme.extend.colors.cell.hover);
-    }
-  };
-
-  const handleMouseLeave = (e) => {
-    e.preventDefault();
-    changeBgColor();
-  };
-
   return (
     <button
       onClick={handleClickCell ? () => handleClickCell(x, y) : null}
-      onMouseOver={handleOnMouseOver}
-      onMouseLeave={handleMouseLeave}
       data-shipname={content}
       key={`${x}-${y}`}
       id={`${x}-${y}`}
-      style={{
-        backgroundColor: bgColor,
-        cursor: isCellUnclicked ? "pointer" : "default",
-      }}
-      className="w-12 h-12 border border-black"
+      className={cellStyle}
     ></button>
   );
 };
@@ -72,8 +56,8 @@ const GameBoard = ({
     >
       <h2 className="mb-2 text-3xl font-bold">{playerName}</h2>
       <div
+        className="grid"
         style={{
-          display: "grid",
           gridTemplateColumns: `repeat(${gameBoard.length}, 1fr)`,
           gridTemplateRows: `repeat(${gameBoard.length}, 1fr)`,
         }}
