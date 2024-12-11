@@ -1,7 +1,3 @@
-import { motion } from "framer-motion";
-
-import tailwindConfig from "../../tailwind.config";
-
 const GameButton = ({
   areAllShipsPlaced,
   isGameOn,
@@ -20,23 +16,16 @@ const GameButton = ({
       ? handleClickRestartGame
       : handleClickNewGame
     : handlePlaceShipsRandomly;
-
   return (
     <div className="mt-12 w-full flex justify-center items-center">
-      <motion.button
+      <button
         key={buttonText}
-        initial={{ opacity: 0, scale: 0 }}
-        animate={{ opacity: 1, scale: 1 }}
-        transition={{ duration: 0.2 }}
-        whileHover={{
-          backgroundColor: tailwindConfig.theme.extend.colors.button.hover,
-        }}
-        whileTap={{ scale: 0.95 }}
-        className="p-8 flex-grow max-w-[400px] text-2xl font-bold bg-button border-2 border-border rounded-xl"
+        className="p-8 flex-grow max-w-[400px] text-2xl font-bold bg-button 
+         border-2 border-border rounded-xl hover:bg-button-hover active:scale-95 transition-all duration-200 ease-in-out animate-scaleIn"
         onClick={handleClick}
       >
         {buttonText}
-      </motion.button>
+      </button>
     </div>
   );
 };
