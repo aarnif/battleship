@@ -1,7 +1,7 @@
 const GameOverModal = ({ gameOverMessage, rounds, handleClickRestartGame }) => {
   return (
-    <div className="z-20 fixed inset-0 flex items-center justify-center bg-overlay animate-scaleIn">
-      <div className="p-8 w-[500px] flex flex-col justify-center items-center rounded-xl bg-modal animate-scaleIn">
+    <div className="z-20 fixed inset-0 flex items-center justify-center bg-overlay animate-scale-in">
+      <div className="p-8 w-[500px] flex flex-col justify-center items-center rounded-xl bg-modal animate-scale-in">
         <h1 className="text-4xl font-extrabold my-4">Game Over!</h1>
         <h2 className="text-3xl font-bold mb-2">{gameOverMessage}</h2>
         <h3 className="text-2xl font-medium mb-8">

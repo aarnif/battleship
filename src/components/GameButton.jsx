@@ -21,7 +21,7 @@ const GameButton = ({
       <button
         key={buttonText}
         className="p-8 flex-grow max-w-[400px] text-2xl font-bold bg-button 
-         border-2 border-border rounded-xl hover:bg-button-hover active:scale-95 transition-all duration-200 ease-in-out animate-scaleIn"
+         border-2 border-border rounded-xl hover:bg-button-hover active:scale-95 transition-all duration-200 ease-in-out animate-scale-in"
         onClick={handleClick}
       >
         {buttonText}

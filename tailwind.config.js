@@ -8,9 +8,14 @@ export default {
           "0%": { opacity: "0", transform: "scale(0)" },
           "100%": { opacity: "1", transform: "scale(1)" },
         },
+        rotateAndScale: {
+          "0%": { opacity: "0", transform: "rotate(0) scale(1)" },
+          "100%": { opacity: "1", transform: "rotate(360deg) scale(1.5)" },
+        },
       },
       animation: {
-        scaleIn: "scaleIn 0.3s ease-in-out",
+        "scale-in": "scaleIn 0.3s ease-in-out",
+        "rotate-and-scale": "rotateAndScale 0.5s ease-in-out forwards",
       },
       colors: {
         body: "#a7f3d0", // Light emerald (matches Tailwind's emerald-200)
