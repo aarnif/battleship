@@ -47,12 +47,17 @@ const GameBoard = ({
   variants,
 }) => {
   const shipNames = ships.map((ship) => ship.name);
+
+  const boardContainerClass = {
+    Player: "z-10 relative flex flex-col items-center",
+    Computer: "relative flex flex-col items-center",
+  };
+
   return (
     <motion.div
       {...variants}
       transition={{ duration: 0.5 }}
-      className="relative flex flex-col items-center"
-      style={{ zIndex: playerName === "Player" && 10 }}
+      className={boardContainerClass[playerName]}
     >
       <h2 className="mb-2 text-3xl font-bold">{playerName}</h2>
       <div
