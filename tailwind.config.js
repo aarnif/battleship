@@ -3,6 +3,15 @@ export default {
   content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"],
   theme: {
     extend: {
+      keyframes: {
+        scaleIn: {
+          "0%": { opacity: "0", transform: "scale(0)" },
+          "100%": { opacity: "1", transform: "scale(1)" },
+        },
+      },
+      animation: {
+        scaleIn: "scaleIn 0.3s ease-in-out",
+      },
       colors: {
         body: "#a7f3d0", // Light emerald (matches Tailwind's emerald-200)
         bodyText: "#064e3b", // Very dark emerald (matches Tailwind's emerald-900)
