@@ -105,8 +105,7 @@ const App = () => {
     }
   };
 
-  const handleChangeShipPosition = (e) => {
-    const shipName = e.target.getAttribute("data-shipname");
+  const handleChangeShipPosition = (shipName) => {
     const ship = player.gameBoard.ships.find((ship) => ship.name === shipName);
     const newShipPosition =
       ship.position === "horizontal" ? "vertical" : "horizontal";

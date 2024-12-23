@@ -1,13 +1,56 @@
 import { useState, useEffect } from "react";
 import { AnimatePresence, motion } from "framer-motion";
+import Carrier from "./Carrier";
+import Battleship from "./Battleship";
+import Cruiser from "./Cruiser";
+import Submarine from "./Submarine";
+import Destroyer from "./Destroyer";
 
 const animationTransitionTime = 0.5;
 const animationDelayTime = 0.5;
 
+const shipIcons = {
+  Carrier: {
+    horizontal: "absolute cursor-pointer w-60 h-12",
+    vertical: "absolute rotate-90 cursor-pointer w-60 h-12",
+    component: (
+      <Carrier className="w-full h-full object-cover fill-current text-ship-icon" />
+    ),
+  },
+  Battleship: {
+    horizontal: "absolute text-ship-icon cursor-pointer w-full h-12",
+    vertical: "absolute text-ship-icon rotate-90 cursor-pointer w-48 h-12",
+    component: (
+      <Battleship className="w-full h-full object-cover fill-current text-ship-icon" />
+    ),
+  },
+  Cruiser: {
+    horizontal: "absolute cursor-pointer w-full h-12",
+    vertical: "absolute rotate-90 cursor-pointer w-36 h-12",
+    component: (
+      <Cruiser className="w-full h-full object-cover fill-current text-ship-icon" />
+    ),
+  },
+  Submarine: {
+    horizontal: "absolute cursor-pointer w-full h-12",
+    vertical: "absolute rotate-90 cursor-pointer w-36 h-12",
+    component: (
+      <Submarine className="w-full h-full object-cover fill-current text-ship-icon" />
+    ),
+  },
+  Destroyer: {
+    horizontal: "absolute cursor-pointer w-full h-12",
+    vertical: "absolute rotate-90 cursor-pointer w-24 h-12",
+    component: (
+      <Destroyer className="w-full h-full object-cover fill-current text-ship-icon" />
+    ),
+  },
+};
+
 const FreeCell = ({ shipNames, content, y, x, handlePlaceShip }) => {
   const classStyles = {
     free: "w-12 h-12 bg-cell border border-border group",
-    ship: "w-12 h-12 bg-shipCell border border-border group",
+    ship: "w-12 h-12 bg-ship-cell border border-border group",
   };
 
   const [cellStyle, setCellStyle] = useState(classStyles.free);
@@ -55,8 +98,8 @@ const FreeCell = ({ shipNames, content, y, x, handlePlaceShip }) => {
 
 const PlacedShip = ({ ship, handleDragStart, handleChangeShipPosition }) => {
   const shipClasses = {
-    horizontal: "group flex",
-    vertical: "group flex flex-col",
+    horizontal: "relative group flex justify-center items-center",
+    vertical: "relative group flex flex-col justify-center items-center",
   };
 
   return (
@@ -70,13 +113,17 @@ const PlacedShip = ({ ship, handleDragStart, handleChangeShipPosition }) => {
       className={shipClasses[ship.position]}
       draggable={true}
       onDragStart={(e) => handleDragStart(e, ship)}
-      onClick={handleChangeShipPosition}
     >
+      <button
+        className={shipIcons[ship.name][ship.position]}
+        onClick={() => handleChangeShipPosition(ship.name)}
+      >
+        {shipIcons[ship.name].component}
+      </button>
       {ship.coordinates.map((coordinate) => (
         <div
-          data-shipname={ship.name}
           key={`${coordinate[0]}-${coordinate[1]}`}
-          className="w-12 h-12 border border-border bg-shipCell group-hover:bg-shipCell-hover cursor-pointer"
+          className="w-12 h-12 border border-border bg-ship-cell bg-opacity-100 group-hover:bg-ship-cell-hover cursor-pointer"
         ></div>
       ))}
     </motion.div>
@@ -180,14 +227,20 @@ const ShipsContainer = ({ shipTypes, shipNames, handleDragStart }) => {
         {unPlacedShips.map((ship) => (
           <div
             key={ship.name}
-            className="mb-8 flex hover:cursor-pointer group"
+            className="relative mb-8 flex justify-center items-center hover:cursor-pointer group"
             draggable={true}
             onDragStart={(e) => handleDragStart(e, ship)}
           >
+            <button
+              className={shipIcons[ship.name]["horizontal"]}
+              onClick={() => {}}
+            >
+              {shipIcons[ship.name].component}
+            </button>
             {[...Array(ship.length).keys()].map((index) => (
               <div
                 key={`${ship.name}-${index}`}
-                className="w-12 h-12 border border-border bg-shipCell group-hover:bg-shipCell-hover"
+                className="w-12 h-12 border border-border bg-ship-cell group-hover:bg-ship-cell-hover"
               ></div>
             ))}
           </div>
