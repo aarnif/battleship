@@ -1,51 +1,9 @@
 import { useState, useEffect } from "react";
 import { AnimatePresence, motion } from "framer-motion";
-import Carrier from "./Carrier";
-import Battleship from "./Battleship";
-import Cruiser from "./Cruiser";
-import Submarine from "./Submarine";
-import Destroyer from "./Destroyer";
+import shipIcons from "./shipIcons";
 
 const animationTransitionTime = 0.5;
 const animationDelayTime = 0.5;
-
-const shipIcons = {
-  Carrier: {
-    horizontal: "absolute cursor-pointer w-60 h-12",
-    vertical: "absolute rotate-90 cursor-pointer w-60 h-12",
-    component: (
-      <Carrier className="w-full h-full object-cover fill-current text-ship-icon" />
-    ),
-  },
-  Battleship: {
-    horizontal: "absolute text-ship-icon cursor-pointer w-full h-12",
-    vertical: "absolute text-ship-icon rotate-90 cursor-pointer w-48 h-12",
-    component: (
-      <Battleship className="w-full h-full object-cover fill-current text-ship-icon" />
-    ),
-  },
-  Cruiser: {
-    horizontal: "absolute cursor-pointer w-full h-12",
-    vertical: "absolute rotate-90 cursor-pointer w-36 h-12",
-    component: (
-      <Cruiser className="w-full h-full object-cover fill-current text-ship-icon" />
-    ),
-  },
-  Submarine: {
-    horizontal: "absolute cursor-pointer w-full h-12",
-    vertical: "absolute rotate-90 cursor-pointer w-36 h-12",
-    component: (
-      <Submarine className="w-full h-full object-cover fill-current text-ship-icon" />
-    ),
-  },
-  Destroyer: {
-    horizontal: "absolute cursor-pointer w-full h-12",
-    vertical: "absolute rotate-90 cursor-pointer w-24 h-12",
-    component: (
-      <Destroyer className="w-full h-full object-cover fill-current text-ship-icon" />
-    ),
-  },
-};
 
 const FreeCell = ({ shipNames, content, y, x, handlePlaceShip }) => {
   const classStyles = {
@@ -103,7 +61,7 @@ const PlacedShip = ({ ship, handleDragStart, handleChangeShipPosition }) => {
   };
 
   return (
-    <motion.div
+    <motion.button
       key={ship.name}
       style={{
         gridArea: ship.name,
@@ -113,20 +71,18 @@ const PlacedShip = ({ ship, handleDragStart, handleChangeShipPosition }) => {
       className={shipClasses[ship.position]}
       draggable={true}
       onDragStart={(e) => handleDragStart(e, ship)}
+      onClick={() => handleChangeShipPosition(ship.name)}
     >
-      <button
-        className={shipIcons[ship.name][ship.position]}
-        onClick={() => handleChangeShipPosition(ship.name)}
-      >
+      <div className={shipIcons[ship.name][ship.position]}>
         {shipIcons[ship.name].component}
-      </button>
+      </div>
       {ship.coordinates.map((coordinate) => (
         <div
           key={`${coordinate[0]}-${coordinate[1]}`}
           className="w-12 h-12 border border-border bg-ship-cell bg-opacity-100 group-hover:bg-ship-cell-hover cursor-pointer"
         ></div>
       ))}
-    </motion.div>
+    </motion.button>
   );
 };
 
