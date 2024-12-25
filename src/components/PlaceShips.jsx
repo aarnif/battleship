@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import shipIcons from "./shipIcons";
+import helpers from "../helpers";
 
 const animationTransitionTime = 0.5;
 const animationDelayTime = 0.5;
@@ -96,19 +97,13 @@ const ShipPlacementBoard = ({
   handleChangeShipPosition,
   areAllShipsPlaced,
 }) => {
-  const generateGridTemplate = (array) =>
-    array
-      .map((row) =>
-        row.map((cell) => (shipNames.includes(cell) ? cell : ".")).join(" ")
-      )
-      .join("'\n'");
+  const nonShipCells = helpers.generateNonShipCells(shipNames, gameBoard);
 
-  const nonShipCells = gameBoard
-    .map((row, x) => row.map((cell, y) => !shipNames.includes(cell) && [x, y]))
-    .flat()
-    .filter((cell) => cell !== false);
+  const gridTemplateAreas = `'${helpers.generateGridTemplate(
+    shipNames,
+    gameBoard
+  )}'`;
 
-  const gridTemplateAreas = `'${generateGridTemplate(gameBoard)}'`;
   return (
     <motion.div
       className="z-10 relative flex flex-col items-center"
