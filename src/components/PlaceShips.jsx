@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { AnimatePresence, motion } from "framer-motion";
-import shipIcons from "./shipIcons";
+import ShipIcon from "./ShipIcon";
 import helpers from "../helpers";
 
 const animationTransitionTime = 0.5;
@@ -74,9 +74,7 @@ const PlacedShip = ({ ship, handleDragStart, handleChangeShipPosition }) => {
       onDragStart={(e) => handleDragStart(e, ship)}
       onClick={() => handleChangeShipPosition(ship.name)}
     >
-      <div className={shipIcons[ship.name][ship.position]}>
-        {shipIcons[ship.name].component}
-      </div>
+      <ShipIcon ship={ship} />
       {ship.coordinates.map((coordinate) => (
         <div
           key={`${coordinate[0]}-${coordinate[1]}`}
@@ -182,12 +180,7 @@ const ShipsContainer = ({ shipTypes, shipNames, handleDragStart }) => {
             draggable={true}
             onDragStart={(e) => handleDragStart(e, ship)}
           >
-            <button
-              className={shipIcons[ship.name]["horizontal"]}
-              onClick={() => {}}
-            >
-              {shipIcons[ship.name].component}
-            </button>
+            <ShipIcon ship={ship} position={"horizontal"} />
             {[...Array(ship.length).keys()].map((index) => (
               <div
                 key={`${ship.name}-${index}`}

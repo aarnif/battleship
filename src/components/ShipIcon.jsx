@@ -44,4 +44,12 @@ const shipIcons = {
   },
 };
 
-export default shipIcons;
+const ShipIcon = ({ ship, position = ship.position }) => {
+  return (
+    <div className={shipIcons[ship.name][position]}>
+      {shipIcons[ship.name].component}
+    </div>
+  );
+};
+
+export default ShipIcon;
