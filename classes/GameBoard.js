@@ -135,6 +135,7 @@ class GameBoard {
       coordinates: shipCoordinates,
       position: position,
       length: this.shipTypes.find((ship) => ship.name === type).length,
+      isSunk: false,
     });
     return true;
   }
@@ -180,6 +181,7 @@ class GameBoard {
         coordinates: shipCoordinates,
         position: position,
         length: this.shipTypes.find((ship) => ship.name === type).length,
+        isSunk: false,
       });
     }
     this.updateShipPositions();
@@ -193,13 +195,38 @@ class GameBoard {
     });
   }
 
+  checkIfShipIsSunk(shipName) {
+    for (let i = 0; i < this.board.length; ++i) {
+      for (let j = 0; j < this.board.length; ++j) {
+        if (this.board[i][j] === shipName) {
+          return false;
+        }
+      }
+    }
+    return true;
+  }
+
   receiveAttack(coordinates) {
     const [x, y] = coordinates;
     if (this.board[x][y] == "hit" || this.board[x][y] == "miss") {
       return false;
     }
-    if (this.shipTypes.find((ship) => ship.name === this.board[x][y])) {
+    const checkIfShipIsHit = this.shipTypes.find(
+      (ship) => ship.name === this.board[x][y]
+    );
+
+    if (checkIfShipIsHit) {
+      const findShipThatIsHit = this.ships.find(
+        (ship) => ship.name === this.board[x][y]
+      );
       this.board[x][y] = "hit";
+      if (this.checkIfShipIsSunk(findShipThatIsHit.name)) {
+        this.ships = this.ships.map((ship) =>
+          ship.name === findShipThatIsHit.name
+            ? { ...ship, isSunk: true }
+            : ship
+        );
+      }
     } else {
       this.board[x][y] = "miss";
     }
