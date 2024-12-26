@@ -27,7 +27,10 @@ export default {
         bodyText: "#064e3b", // Very dark emerald (matches Tailwind's emerald-900)
         header: "#34d399", // Dark emerald (matches Tailwind's emerald-600)
         ship: "#10B981", // Vibrant emerald (matches Tailwind's emerald-500)
-        "ship-icon": "#065F46", // Vibrant emerald (matches Tailwind's emerald-700)
+        "ship-icon": {
+          DEFAULT: "#065F46", // Vibrant emerald (matches Tailwind's emerald-700)
+          sunk: "#b91c1c", // Red (matches Tailwind's red-700)
+        },
         cell: {
           DEFAULT: "#6EE7B7", // Soft emerald (matches Tailwind's emerald-300)
           hover: "#34d399", // Brighter emerald (matches Tailwind's emerald-400)
