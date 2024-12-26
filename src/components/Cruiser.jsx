@@ -7,6 +7,7 @@ const Cruiser = ({ className }) => {
       preserveAspectRatio="xMidYMid meet"
       className={className}
     >
+      <metadata>Created by usubaliev from Noun Project</metadata>
       <g>
         <circle cx="63.336" cy="51.872" r="0.169" />
         <polygon points="66.876,53.043 65.955,53.042 65.855,53.954 66.841,53.953  " />
