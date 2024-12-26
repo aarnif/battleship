@@ -21,7 +21,8 @@ The project is part of the [The Odin Project's](https://www.theodinproject.com/)
 
 ## Icons
 
-- [React Icons](https://react-icons.github.io/react-icons/)
+- [React Icons](https://react-icons.github.io/react-icons/) (Github Icon)
+- [usubaliev, The Noun Project](https://thenounproject.com/creator/usubaliev/) (Ship Icons)
 
 ## Images
 
