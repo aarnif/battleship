@@ -33,3 +33,21 @@ Ship placement
 ![Battleship](public/gameplay.png)
 Gameplay
 <br>
+
+## Instructions
+
+```
+HTTPS - git clone https://github.com/aarnif/battleship.git
+
+SSH - git clone git@github.com:aarnif/battleship.git
+
+cd battleship
+
+npm install
+
+npm run dev # Start the app in development mode
+
+npm run build # Build the app for production
+
+npm run preview # Start the app in production mode
+```
