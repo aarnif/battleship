@@ -203,6 +203,18 @@ const App = () => {
           />
         )}
       </div>
+      <div className="relative bottom-8">
+        Ship Icons created by{" "}
+        <a
+          href="https://thenounproject.com/creator/usubaliev/"
+          target="_blank"
+          rel="noreferrer"
+          className="hover:underline"
+        >
+          <strong>usubaliev</strong>
+        </a>{" "}
+        from Noun Project
+      </div>
       <Footer />
     </>
   );
