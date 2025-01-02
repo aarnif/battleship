@@ -1,28 +1,44 @@
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
+
+import AimCursor from "./AimCursor.jsx";
 import ShipIcon from "./ShipIcon.jsx";
 import helpers from "../helpers.js";
 
 const Cell = ({ playerName, shipNames, content, y, x, handleClickCell }) => {
   const classStyles = {
-    default:
-      "w-12 h-12 bg-cell hover:bg-cell-hover border border-border group cursor-pointer",
-    ship: "w-12 h-12 bg-ship-cell border border-border group cursor-pointer",
-    miss: "w-12 h-12 bg-cell-miss border border-border group cursor-default",
-    hit: "w-12 h-12 bg-cell-hit border border-border group cursor-default",
+    default: {
+      Computer:
+        "w-12 h-12 bg-cell hover:bg-cell-hover border border-border group cursor-none",
+      Player: "w-12 h-12 bg-cell border border-border group cursor-default",
+    },
+    ship: {
+      Computer: "w-12 h-12 bg-ship-cell border border-border group cursor-none",
+      Player:
+        "w-12 h-12 bg-ship-cell border border-border group cursor-default",
+    },
+    miss: {
+      Computer: "w-12 h-12 bg-cell-miss border border-border group cursor-none",
+      Player:
+        "w-12 h-12 bg-cell-miss border border-border group cursor-default",
+    },
+    hit: {
+      Computer: "w-12 h-12 bg-cell-hit border border-border group cursor-none",
+      Player: "w-12 h-12 bg-cell-hit border border-border group cursor-default",
+    },
   };
 
-  const [cellStyle, setCellStyle] = useState(classStyles.default);
+  const [cellStyle, setCellStyle] = useState(classStyles.default[playerName]);
 
   const changeBgColor = () => {
     if (shipNames.includes(content) && playerName === "Player") {
-      setCellStyle(classStyles.ship);
+      setCellStyle(classStyles.ship[playerName]);
     } else if (content === "miss") {
-      setCellStyle(classStyles.miss);
+      setCellStyle(classStyles.miss[playerName]);
     } else if (content === "hit") {
-      setCellStyle(classStyles.hit);
+      setCellStyle(classStyles.hit[playerName]);
     } else {
-      setCellStyle(classStyles.default);
+      setCellStyle(classStyles.default[playerName]);
     }
   };
 
@@ -58,6 +74,9 @@ const GameBoard = ({
     helpers.generateNonShipCells(shipNames, gameBoard)
   );
 
+  const [showAimCursor, setShowAimCursor] = useState(false);
+  const [aimCoordinates, setAimCoordinates] = useState({ x: 0, y: 0 });
+
   const boardContainerClass = {
     Player: "z-10 relative flex flex-col items-center",
     Computer: "relative flex flex-col items-center",
@@ -68,6 +87,27 @@ const GameBoard = ({
     vertical: "relative group flex flex-col justify-center items-center",
   };
 
+  const moveAimCursor = (event) => {
+    if (playerName === "Computer") {
+      const rect = event.currentTarget.getBoundingClientRect();
+      const x = event.clientX - rect.left - 20;
+      const y = event.clientY - rect.top - 20;
+      setAimCoordinates({ x, y });
+    }
+  };
+
+  const handleMouseOver = () => {
+    if (playerName === "Computer") {
+      setShowAimCursor(true);
+    }
+  };
+
+  const handleMouseOut = () => {
+    if (playerName === "Computer") {
+      setShowAimCursor(false);
+    }
+  };
+
   return (
     <motion.div
       {...variants}
@@ -76,10 +116,13 @@ const GameBoard = ({
     >
       <h2 className="mb-2 text-3xl font-bold">{playerName}</h2>
       <div
-        className="grid"
+        className="relative grid cursor-none"
         style={{
           gridTemplateAreas: gridTemplateAreas,
         }}
+        onMouseOver={handleMouseOver}
+        onMouseMove={moveAimCursor}
+        onMouseOut={handleMouseOut}
       >
         {ships.map((ship) => (
           <motion.div
@@ -118,6 +161,7 @@ const GameBoard = ({
             handleClickCell={handleClickCell}
           />
         ))}
+        {showAimCursor && <AimCursor aimCoordinates={aimCoordinates} />}
       </div>
     </motion.div>
   );
