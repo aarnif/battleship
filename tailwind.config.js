@@ -49,6 +49,7 @@ export default {
         footer: "#34d399", // Dark emerald (matches Tailwind's emerald-600)
         overlay: "rgba(0, 0, 0, 0.7)", // Backdrop color (semi-transparent black)
         modal: "#a7f3d0", // Brighter emerald (matches Tailwind's emerald-200)
+        "aim-cursor": "#064e3b", // Very dark emerald (matches Tailwind's emerald-900)
       },
     },
   },
