@@ -1,3 +1,4 @@
+import { useState, useEffect } from "react";
 import { BsCrosshair } from "react-icons/bs";
 
 const AimCursor = ({
@@ -28,6 +29,16 @@ const AimCursor = ({
     miss: "absolute w-2 h-2 bg-aim-cursor-center-played rounded-full",
   };
 
+  const [cursorStyle, setCursorStyle] = useState(cursorStyles.default);
+  const [cursorCenterStyle, setCursorCenterStyle] = useState(
+    cursorCenterStyles.default
+  );
+
+  useEffect(() => {
+    setCursorStyle(cursorStyles[aimCursorTarget]);
+    setCursorCenterStyle(cursorCenterStyles[aimCursorTarget]);
+  }, [aimCursorTarget]);
+
   return (
     <div
       className="z-50 absolute flex justify-center items-center cursor-none pointer-events-none"
@@ -38,8 +49,8 @@ const AimCursor = ({
         left: aimCursorCoordinates.x,
       }}
     >
-      <BsCrosshair className={cursorStyles[aimCursorTarget]} />
-      <div className={cursorCenterStyles[aimCursorTarget]}></div>
+      <BsCrosshair className={cursorStyle} />
+      <div className={cursorCenterStyle}></div>
     </div>
   );
 };
