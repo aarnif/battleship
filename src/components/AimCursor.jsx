@@ -1,4 +1,4 @@
-import { BiCross } from "react-icons/bi";
+import { BsCrosshair } from "react-icons/bs";
 
 const AimCursor = ({
   cursorWidth,
@@ -6,7 +6,7 @@ const AimCursor = ({
   aimCursorCoordinates,
   aimCursorTarget,
 }) => {
-  const classStyles = {
+  const cursorStyles = {
     default: "w-10 h-10 fill-current text-aim-cursor",
     Carrier: "w-10 h-10 fill-current text-aim-cursor",
     Battleship: "w-10 h-10 fill-current text-aim-cursor",
@@ -15,6 +15,17 @@ const AimCursor = ({
     Destroyer: "w-10 h-10 fill-current text-aim-cursor",
     hit: "w-10 h-10 fill-current text-aim-cursor-played",
     miss: "w-10 h-10 fill-current text-aim-cursor-played",
+  };
+
+  const cursorCenterStyles = {
+    default: "absolute w-2 h-2 bg-aim-cursor-center rounded-full",
+    Carrier: "absolute w-2 h-2 bg-aim-cursor-center rounded-full",
+    Battleship: "absolute w-2 h-2 bg-aim-cursor-center rounded-full",
+    Cruiser: "absolute w-2 h-2 bg-aim-cursor-center rounded-full",
+    Submarine: "absolute w-2 h-2 bg-aim-cursor-center rounded-full",
+    Destroyer: "absolute w-2 h-2 bg-aim-cursor-center rounded-full",
+    hit: "absolute w-2 h-2 bg-aim-cursor-center-played rounded-full",
+    miss: "absolute w-2 h-2 bg-aim-cursor-center-played rounded-full",
   };
 
   return (
@@ -27,7 +38,8 @@ const AimCursor = ({
         left: aimCursorCoordinates.x,
       }}
     >
-      <BiCross className={classStyles[aimCursorTarget]} />
+      <BsCrosshair className={cursorStyles[aimCursorTarget]} />
+      <div className={cursorCenterStyles[aimCursorTarget]}></div>
     </div>
   );
 };

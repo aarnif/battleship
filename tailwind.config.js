@@ -51,7 +51,11 @@ export default {
         modal: "#a7f3d0", // Brighter emerald (matches Tailwind's emerald-200)
         "aim-cursor": {
           DEFAULT: "#047857", // Dark emerald (matches Tailwind's emerald-700)
-          played: "#b91c1c", // Red (matches Tailwind's red-700)
+          played: "#b91c1c", // Dark Red (matches Tailwind's red-700)
+        },
+        "aim-cursor-center": {
+          DEFAULT: "#ef4444", // Red (matches Tailwind's red-500)
+          played: "#b91c1c", // Dark Red (matches Tailwind's red-700)
         },
       },
     },
