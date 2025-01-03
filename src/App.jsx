@@ -4,6 +4,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import Player from "../classes/Player.js";
 import Ai from "../classes/Ai.js";
 import Header from "./components/Header.jsx";
+import GameText from "./components/GameText.jsx";
 import PlaceShips from "./components/PlaceShips.jsx";
 import GameBoard from "./components/GameBoard.jsx";
 import GameOverModal from "./components/GameOverModal.jsx";
@@ -147,6 +148,7 @@ const App = () => {
     <>
       <Header />
       <div className="w-full max-w-[1200px] flex-grow flex flex-col justify-center items-center">
+        <GameText key="game-text" isGameOn={isGameOn} />
         <AnimatePresence mode="wait">
           {isGameOn ? (
             <motion.div
