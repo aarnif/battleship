@@ -65,6 +65,8 @@ const GameBoard = ({
   variants,
 }) => {
   const shipNames = ships.map((ship) => ship.name);
+  const cursorWidth = 40;
+  const cursorHeight = 40;
 
   const [gridTemplateAreas, setGridTemplateAreas] = useState(
     `'${helpers.generateGridTemplate(shipNames, gameBoard)}'`
@@ -90,8 +92,8 @@ const GameBoard = ({
   const moveAimCursor = (event) => {
     if (playerName === "Computer") {
       const rect = event.currentTarget.getBoundingClientRect();
-      const x = event.clientX - rect.left - 20;
-      const y = event.clientY - rect.top - 20;
+      const x = event.clientX - rect.left - cursorWidth / 2;
+      const y = event.clientY - rect.top - cursorHeight / 2;
       setAimCoordinates({ x, y });
     }
   };
@@ -161,7 +163,13 @@ const GameBoard = ({
             handleClickCell={handleClickCell}
           />
         ))}
-        {showAimCursor && <AimCursor aimCoordinates={aimCoordinates} />}
+        {showAimCursor && (
+          <AimCursor
+            cursorWidth={cursorWidth}
+            cursorHeight={cursorHeight}
+            aimCoordinates={aimCoordinates}
+          />
+        )}
       </div>
     </motion.div>
   );

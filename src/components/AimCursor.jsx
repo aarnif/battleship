@@ -1,8 +1,6 @@
 import { BiCross } from "react-icons/bi";
 
-const AimCursor = ({ aimCoordinates }) => {
-  const cursorWidth = 40;
-  const cursorHeight = 40;
+const AimCursor = ({ cursorWidth, cursorHeight, aimCoordinates }) => {
   return (
     <div
       className="z-50 absolute flex justify-center items-center cursor-none pointer-events-none"
