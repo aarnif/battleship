@@ -5,7 +5,15 @@ import AimCursor from "./AimCursor.jsx";
 import ShipIcon from "./ShipIcon.jsx";
 import helpers from "../helpers.js";
 
-const Cell = ({ playerName, shipNames, content, y, x, handleClickCell }) => {
+const Cell = ({
+  playerName,
+  shipNames,
+  content,
+  y,
+  x,
+  handleClickCell,
+  setAimCursorTarget,
+}) => {
   const classStyles = {
     default: {
       Computer:
@@ -44,6 +52,9 @@ const Cell = ({ playerName, shipNames, content, y, x, handleClickCell }) => {
 
   useEffect(() => {
     changeBgColor();
+    if (playerName === "Computer") {
+      setAimCursorTarget(content);
+    }
   }, [content]);
 
   return (
@@ -157,6 +168,7 @@ const GameBoard = ({
                 y={coordinate[1]}
                 content={gameBoard[coordinate[0]][coordinate[1]]}
                 handleClickCell={handleClickCell}
+                setAimCursorTarget={setAimCursorTarget}
               />
             ))}
           </motion.div>
@@ -170,6 +182,7 @@ const GameBoard = ({
             y={cell[1]}
             content={gameBoard[cell[0]][cell[1]]}
             handleClickCell={handleClickCell}
+            setAimCursorTarget={setAimCursorTarget}
           />
         ))}
         {showAimCursor && (
