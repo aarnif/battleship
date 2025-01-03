@@ -49,7 +49,7 @@ const Cell = ({ playerName, shipNames, content, y, x, handleClickCell }) => {
   return (
     <button
       onClick={handleClickCell ? () => handleClickCell(x, y) : null}
-      data-shipname={content}
+      data-shipname={content ? content : "default"}
       key={`${x}-${y}`}
       id={`${x}-${y}`}
       className={cellStyle}
@@ -77,7 +77,11 @@ const GameBoard = ({
   );
 
   const [showAimCursor, setShowAimCursor] = useState(false);
-  const [aimCoordinates, setAimCoordinates] = useState({ x: 0, y: 0 });
+  const [aimCursorCoordinates, setAimCursorCoordinates] = useState({
+    x: 0,
+    y: 0,
+  });
+  const [aimCursorTarget, setAimCursorTarget] = useState(null);
 
   const boardContainerClass = {
     Player: "z-10 relative flex flex-col items-center",
@@ -94,7 +98,12 @@ const GameBoard = ({
       const rect = event.currentTarget.getBoundingClientRect();
       const x = event.clientX - rect.left - cursorWidth / 2;
       const y = event.clientY - rect.top - cursorHeight / 2;
-      setAimCoordinates({ x, y });
+      const cellElementUnderAim = document.elementFromPoint(
+        event.clientX,
+        event.clientY
+      );
+      setAimCursorTarget(cellElementUnderAim.dataset.shipname);
+      setAimCursorCoordinates({ x, y });
     }
   };
 
@@ -167,7 +176,8 @@ const GameBoard = ({
           <AimCursor
             cursorWidth={cursorWidth}
             cursorHeight={cursorHeight}
-            aimCoordinates={aimCoordinates}
+            aimCursorCoordinates={aimCursorCoordinates}
+            aimCursorTarget={aimCursorTarget}
           />
         )}
       </div>

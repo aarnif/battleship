@@ -28,7 +28,7 @@ export default {
         header: "#34d399", // Dark emerald (matches Tailwind's emerald-600)
         ship: "#10B981", // Vibrant emerald (matches Tailwind's emerald-500)
         "ship-icon": {
-          DEFAULT: "#065F46", // Vibrant emerald (matches Tailwind's emerald-700)
+          DEFAULT: "#065F46", // Vibrant emerald (matches Tailwind's emerald-800)
           sunk: "#b91c1c", // Red (matches Tailwind's red-700)
         },
         cell: {
@@ -49,7 +49,10 @@ export default {
         footer: "#34d399", // Dark emerald (matches Tailwind's emerald-600)
         overlay: "rgba(0, 0, 0, 0.7)", // Backdrop color (semi-transparent black)
         modal: "#a7f3d0", // Brighter emerald (matches Tailwind's emerald-200)
-        "aim-cursor": "#064e3b", // Very dark emerald (matches Tailwind's emerald-900)
+        "aim-cursor": {
+          DEFAULT: "#047857", // Dark emerald (matches Tailwind's emerald-700)
+          played: "#b91c1c", // Red (matches Tailwind's red-700)
+        },
       },
     },
   },
